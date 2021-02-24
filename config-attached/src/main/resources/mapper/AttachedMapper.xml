@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.getidea.config.attached.mapper.AttachedMapper">
+    <insert id="addAttacheds">
+        INSERT INTO
+            config_attached(
+            url,is_delete,pro_id
+            )
+            VALUES
+        <foreach collection="attachedList" item="item" separator=",">
+            (#{item.url,jdbcType=VARCHAR}, #{item.isDelete,jdbcType=BIGINT}, #{item.proId,jdbcType=INTEGER},)
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.getidea.config.userManager.mapper.RoleUserMapper">
+  <resultMap id="BaseResultMap" type="top.getidea.config.common.entity.userManager.RoleUser">
+    <!--@mbg.generated-->
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <insert id="insert" parameterType="top.getidea.config.common.entity.userManager.RoleUser">
+    <!--@mbg.generated-->
+    insert into sys_role_user (role_id, user_id)
+    values (#{role_id,jdbcType=INTEGER}, #{user_id,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="top.getidea.config.common.entity.userManager.RoleUser">
+    <!--@mbg.generated-->
+    insert into sys_role_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="role_id != null">
+        role_id,
+      </if>
+      <if test="user_id != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="role_id != null">
+        #{role_id,jdbcType=INTEGER},
+      </if>
+      <if test="user_id != null">
+        #{user_id,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+    <select id="selectUserByRole" resultType="java.lang.Integer">
+      select user_id
+        from sys_role_user
+        where role_id = #{roleId}
+    </select>
+</mapper>

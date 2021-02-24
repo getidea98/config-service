@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.getidea.config.userManager.mapper.RoleMapper">
+  <resultMap id="BaseResultMap" type="top.getidea.config.common.entity.userManager.Role">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="rolename" jdbcType="VARCHAR" property="rolename" />
+    <result column="default_link" jdbcType="VARCHAR" property="defaultLink" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, rolename, default_link, `status`, description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from sys_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from sys_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="top.getidea.config.common.entity.userManager.Role" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into sys_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rolename != null">
+        rolename,
+      </if>
+      <if test="defaultLink != null">
+        default_link,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rolename != null">
+        #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultLink != null">
+        #{defaultLink,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="top.getidea.config.common.entity.userManager.Role">
+    <!--@mbg.generated-->
+    update sys_role
+    <set>
+      <if test="rolename != null">
+        rolename = #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultLink != null">
+        default_link = #{defaultLink,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="top.getidea.config.common.entity.userManager.Role">
+    <!--@mbg.generated-->
+    update sys_role
+    set rolename = #{rolename,jdbcType=VARCHAR},
+      default_link = #{defaultLink,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=CHAR},
+      description = #{description,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
