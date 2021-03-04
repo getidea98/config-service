@@ -1,6 +1,5 @@
 package top.getidea.config.common.entity.userManager;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,6 +8,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
+ * @author getidea
  * @TableName sys_role
  */
 @Data

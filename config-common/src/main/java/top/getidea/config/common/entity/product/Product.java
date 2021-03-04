@@ -2,12 +2,14 @@ package top.getidea.config.common.entity.product;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+import top.getidea.config.common.entity.assets.Assets;
 import top.getidea.config.common.valid.AddGroup;
 import top.getidea.config.common.valid.UpdateGroup;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 产品实体类
@@ -22,13 +24,14 @@ public class Product {
     /**
      * 主键：产品id
      */
-    @TableId(value = "product_id",type = IdType.AUTO)
+    @TableField(value = "product_id")
     @NotNull(message = "必须提供主键值", groups = {UpdateGroup.class})
     private Integer productId;
 
     /**
      * 产品经理id
      */
+    @TableField("managerId")
     @NotEmpty(message = "产品经理不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private Integer managerId;
 
@@ -48,8 +51,8 @@ public class Product {
     /**
      * 版本说明
      */
-    @TableField("description")
-    private String message;
+    @TableField("detail")
+    private Integer message;
 
     /**
      * 最后修改时间
@@ -57,9 +60,17 @@ public class Product {
     @TableField("modify_time")
     private Date modifyTime;
 
+    @TableField("create_time")
+    private Date createTime;
     /**
      * 是否删除
      */
-    @TableLogic(value = "false",delval = "true")
-    private Boolean is_deprecated;
+    @TableField("is_deprecated")
+    private Boolean isDeprecated;
+
+    /**
+     * product_assets
+     */
+    @TableField(exist = false)
+    private List<Assets> assetsList;
 }
