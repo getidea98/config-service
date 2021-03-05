@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @author getidea
  */
 @SpringBootApplication
-@EnableFeignClients(basePackages = {"top.getidea.config.common.feign.usermanager"})
+@EnableFeignClients(basePackages = {"top.getidea.config.common.feign.*"})
 @ComponentScan(basePackages = {"top.getidea.config.common.feign.*", "top.getidea.config.product.*"})
 public class ConfigProductApplication {
 
