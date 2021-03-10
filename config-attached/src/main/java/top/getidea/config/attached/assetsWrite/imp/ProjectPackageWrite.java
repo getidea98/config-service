@@ -10,11 +10,16 @@ import javax.annotation.Resource;
 /**
  * @author getidea
  */
-@Component("projectAssetsWrite")
-public class ProjectAssetsWrite implements AssetsWrite {
-
+@Component("projectPackageWrite")
+public class ProjectPackageWrite implements AssetsWrite {
     @Resource(name = "attachedMapper")
     private AttachedMapper attachedMapper;
+
+    /**
+     * 返回插入数据的主键
+     * @param assets
+     * @return
+     */
     @Override
     public Integer write(Assets assets) {
         attachedMapper.insert(assets);

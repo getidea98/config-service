@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 /**
  * @author Fange
- * @date 2020/11/20
  */
 @Service("productService")
 @Slf4j
@@ -45,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result addProduct(ProductMeta productMeta, Product product) {
+    public Result<Integer> addProduct(ProductMeta productMeta, Product product) {
         productMeta.setCreateTime(new Date());
         productMeta.setModifyTime(new Date());
         productMetaMapper.insert(productMeta);
@@ -53,14 +52,14 @@ public class ProductServiceImpl implements ProductService {
         product.setCreateTime(new Date());
         product.setModifyTime(new Date());
         productMapper.insert(product);
-        product.getAssetsList().parallelStream().peek(item -> {
+        long count = product.getAssetsList().parallelStream().peek(item -> {
             ProductAssets productAssets = new ProductAssets();
             productAssets.setProductId(product.getProductId());
             productAssets.setAssetsId(item.getId());
             productAssets.setProductVersion(product.getProdVersion());
             productAssetsMapper.insert(productAssets);
         }).count();
-        return new Result(EnumResult.SUCCESS);
+        return new Result<Integer>(EnumResult.SUCCESS);
     }
 
     /**
@@ -86,14 +85,14 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public Result getProducts(Integer productId) {
+    public Result<Map<String, Object>> getProducts(Integer productId) {
         ProductMeta productMeta = productMetaMapper.selectById(productId);
         LambdaUpdateWrapper<Product> lambdaUpdateWrapper = new LambdaUpdateWrapper();
         lambdaUpdateWrapper.eq(Product::getProductId, productId);
         List<Product> products = productMapper.selectList(lambdaUpdateWrapper);
-        Map result = productToMap(productMeta, products);
+        Map<String, Object> result = productToMap(productMeta, products);
         //TODO 获取本产品历史所有版本
-        return new Result(EnumResult.SUCCESS).setData(result);
+        return new Result<Map<String, Object>>(EnumResult.SUCCESS).setData(result);
     }
 
     @Override
@@ -102,13 +101,13 @@ public class ProductServiceImpl implements ProductService {
         LambdaQueryWrapper<Product> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Product::getManagerId, user.getData().getId());
         Integer count = productMapper.selectCount(lambdaQueryWrapper);
-        return new Result(EnumResult.SUCCESS).setData(count);
+        return new Result<Integer>(EnumResult.SUCCESS).setData(count);
     }
 
     @Override
-    public Result productOfNumber() {
+    public Result<Integer> productOfNumber() {
         Integer integer = productMetaMapper.selectCount(null);
-        return new Result(EnumResult.SUCCESS).setData(integer);
+        return new Result<Integer>(EnumResult.SUCCESS).setData(integer);
     }
 
     /**
@@ -118,7 +117,7 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public Result<Map> getProductDetails(Integer id, String productVersion) {
+    public Result<Map<String,Object>> getProductDetails(Integer id, String productVersion) {
         LambdaQueryWrapper<Product> productLambdaQueryWrapper = new LambdaQueryWrapper<>();
         productLambdaQueryWrapper
                 .eq(Product::getProductId,id)
@@ -133,7 +132,7 @@ public class ProductServiceImpl implements ProductService {
         result.put("codeVersion","1.0.4");
         result.put("tester",userFeign.getUserByKey(60000).getData());
         result.put("message", productMeta.getDescription());
-        return new Result<Map>(EnumResult.SUCCESS).setData(result);
+        return new Result<Map<String,Object>>(EnumResult.SUCCESS).setData(result);
     }
 
     @Override

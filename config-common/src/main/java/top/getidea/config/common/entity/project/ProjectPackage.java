@@ -1,5 +1,6 @@
 package top.getidea.config.common.entity.project;
 
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -8,14 +9,10 @@ import lombok.Data;
  * @author getidea
  */
 @Data
-@TableName("config_project_product")
-public class ProjectProduct {
+@TableName("config_project_package")
+public class ProjectPackage {
+    @TableField("assets_id")
+    private Integer assetsId;
     @TableField("project_id")
     private Integer projectId;
-    @TableField("product_id")
-    private Integer productId;
-    @TableField("product_version")
-    private String productVersion;
-    @TableField("is_send")
-    private Boolean isSend;
 }

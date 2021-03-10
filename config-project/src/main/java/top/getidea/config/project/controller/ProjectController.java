@@ -1,11 +1,13 @@
 package top.getidea.config.project.controller;
 
 import org.springframework.web.bind.annotation.*;
+import top.getidea.config.common.entity.project.ConfigProjectOperateLog;
 import top.getidea.config.common.entity.project.Project;
 import top.getidea.config.common.util.Result;
 import top.getidea.config.project.service.ProjectService;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author getidea
@@ -40,5 +42,15 @@ public class ProjectController {
     @GetMapping("/getProjectDetail")
     public Result getProjectDetail(@RequestParam Integer projectId){
         return projectService.getProjectDetail(projectId);
+    }
+
+    @GetMapping("/getProjectOperateLog")
+    public Result<List<ConfigProjectOperateLog>> getProjectOperateLog(@RequestParam("projectId") Integer projectId){
+        return projectService.getProjectOperateLog(projectId);
+    }
+
+    @PutMapping("/writeProjectOperateLog")
+    public Result writeProjectOperateLog(@RequestBody ConfigProjectOperateLog projectOperateLog){
+        return projectService.writeProjectOperateLog(projectOperateLog);
     }
 }

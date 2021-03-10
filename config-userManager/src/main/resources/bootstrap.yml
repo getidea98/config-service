@@ -3,6 +3,6 @@ spring:
     name: config-userManager
   cloud:
     nacos:
-      server-addr: 172.16.0.228:8848
+      server-addr: tx.getidea.top:8848
       config:
         file-extension: yml

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.getidea.config.administer.mapper.AdminMapper">
+
+    <resultMap id="BaseResultMapper" type="top.getidea.config.common.entity.project.Project">
+        <id javaType="java.lang.Integer" property="projectId" jdbcType="INTEGER" column="project_id"/>
+        <result javaType="java.lang.String" property="projectName" jdbcType="VARCHAR" column="project_name"/>
+        <result javaType="java.lang.Integer" property="amount" jdbcType="INTEGER" column="amount"/>
+        <result javaType="java.lang.Integer" property="managerId" jdbcType="INTEGER" column="manager_id"/>
+        <result javaType="java.lang.String" property="projectAddress" jdbcType="VARCHAR" column="project_address"/>
+        <result javaType="java.lang.String" property="projectCustomName" jdbcType="VARCHAR" column="project_custom_name"/>
+        <result javaType="java.lang.Integer" property="projectNumber" jdbcType="INTEGER" column="project_number"/>
+        <result javaType="java.lang.Integer" property="progress" jdbcType="INTEGER" column="progress"/>
+        <result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time"/>
+        <result javaType="java.util.Date" property="modifyTime" jdbcType="TIMESTAMP" column="modify_time"/>
+    </resultMap>
+
+
+
+    <select id="getList" resultMap="BaseResultMapper">
+        SELECT project_id, project_name, amount, manager_id, project_address, project_custom_name, project_number, progress, create_time, modify_time
+        FROM config_project
+        WHERE
+        <trim prefixOverrides="AND">
+            <if test="key != null and key != ''">
+                project_name LIKE concat ( '%', #{key}, '%' )
+            </if>
+            AND is_delete = false
+            AND progress = 3
+            LIMIT #{offset}, #{rows}
+        </trim>
+    </select>
+    <sql id="Base-ref">
+        product_id productId,
+    product_name productName,
+    product_manager productManager,
+    tester tester,
+    product_version productVersion,
+    code_version codeVersion,
+    code_version_message codeVersionMessage,
+    address address,
+    doc_id docId,
+    note note,
+    create_time createTime,
+    modify_time modifyTime,
+    is_delete isDelete,
+    status status
+    </sql>
+</mapper>

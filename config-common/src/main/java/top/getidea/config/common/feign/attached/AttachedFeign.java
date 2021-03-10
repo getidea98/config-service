@@ -14,7 +14,7 @@ import top.getidea.config.common.util.Result;
 @FeignClient(
         name = "config-attached"
 )
-@Component
+@Component("attachedFeign")
 public interface AttachedFeign {
     @GetMapping("/api/attached/getAttachedById")
     Result<Assets> getAttachedById(@RequestParam("id") Integer id);

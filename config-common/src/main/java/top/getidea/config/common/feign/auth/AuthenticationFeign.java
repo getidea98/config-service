@@ -11,7 +11,7 @@ import top.getidea.config.common.util.Result;
  * @author getidea
  */
 @FeignClient(name = "config-auth")
-@Component
+@Component("authenticationFeign")
 public interface AuthenticationFeign {
 
     /**

@@ -35,7 +35,7 @@ public class ProductController {
 
     /**
      * 编辑产品
-     * @param productMetaDTO
+     * @param productMetaDTO 产品编辑后的信息
      * @return
      */
     @PutMapping("/updateProduct")
@@ -49,12 +49,12 @@ public class ProductController {
     }
 
     @GetMapping("/getProductsDetails")
-    public Result getProductsDetails(@RequestParam Integer id) {
+    public Result<Map<String, Object>> getProductsDetails(@RequestParam Integer id) {
         return productService.getProducts(id);
     }
 
     @GetMapping("/getProductDetails")
-    public Result<Map> getProductDetails(@RequestParam Integer id, @RequestParam String productVersion) {
+    public Result<Map<String,Object>> getProductDetails(@RequestParam Integer id, @RequestParam String productVersion) {
         return productService.getProductDetails(id,productVersion);
     }
 

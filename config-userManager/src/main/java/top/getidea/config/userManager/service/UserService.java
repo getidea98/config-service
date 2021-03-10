@@ -17,4 +17,6 @@ public interface UserService {
     Result<List<Map>> getUserByRole(Integer roleId);
 
     Result<User> getUserByUsername(String username,String usernameOfHeader);
+
+    Result<List<User>> getAllUser(Integer role);
 }

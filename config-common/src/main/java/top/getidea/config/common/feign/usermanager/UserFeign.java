@@ -17,7 +17,7 @@ import java.util.Map;
 @FeignClient(
         name = "config-userManager"
 )
-@Component
+@Component("userFeign")
 public interface UserFeign {
     /**
      * 根据主键获取用户数据

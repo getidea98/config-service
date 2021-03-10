@@ -10,6 +10,7 @@ import top.getidea.config.common.entity.product.Product;
 import top.getidea.config.common.entity.project.ConfigProjectOperateLog;
 import top.getidea.config.common.entity.project.Project;
 import top.getidea.config.common.entity.project.ProjectProduct;
+import top.getidea.config.common.feign.administer.AdministerFeign;
 import top.getidea.config.common.feign.attached.AttachedFeign;
 import top.getidea.config.common.feign.product.ProductFeign;
 import top.getidea.config.common.feign.usermanager.UserFeign;
@@ -20,6 +21,7 @@ import top.getidea.config.project.mapper.ProjectMapper;
 import top.getidea.config.project.mapper.ProjectProductMapper;
 import top.getidea.config.project.service.ProjectService;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,12 +38,15 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectAssetsMapper projectAssetsMapper;
     @Autowired
     private ProjectProductMapper projectProductMapper;
-    @Autowired
+    @Resource(name = "userFeign")
     private UserFeign userFeign;
-    @Autowired
+    @Resource(name = "productFeign")
     private ProductFeign productFeign;
-    @Autowired
+    @Resource(name = "attachedFeign")
     private AttachedFeign attachedFeign;
+    @Resource(name = "administerFeign")
+    private AdministerFeign administerFeign;
+
     @Override
     public Result getList(Integer pageNum, Integer pageSize, String key) {
         Integer offSet = pageNum == 0 ? 0 : (pageNum - 1) * pageSize;
@@ -50,27 +55,27 @@ public class ProjectServiceImpl implements ProjectService {
         List<Map> result = new ArrayList<>();
         for (Project project : projectList) {
             Map projectMap = new HashMap();
-            projectMap.put("createTime",project.getCreateTime());
-            projectMap.put("projectName",project.getProjectName());
-            projectMap.put("manager",userFeign.getUserByKey(project.getManagerId()).getData().getRealname());
-            projectMap.put("projectId",project.getProjectId());
-            projectMap.put("amount",project.getAmount());
-            projectMap.put("contractNumber",project.getProjectNumber());
-            projectMap.put("customerName",project.getProjectCustomName());
-            projectMap.put("progress",project.getProgress());
+            projectMap.put("createTime", project.getCreateTime());
+            projectMap.put("projectName", project.getProjectName());
+            projectMap.put("manager", userFeign.getUserByKey(project.getManagerId()).getData().getRealname());
+            projectMap.put("projectId", project.getProjectId());
+            projectMap.put("amount", project.getAmount());
+            projectMap.put("contractNumber", project.getProjectNumber());
+            projectMap.put("customerName", project.getProjectCustomName());
+            projectMap.put("progress", project.getProgress());
             LambdaQueryWrapper<ConfigProjectOperateLog> configProjectOperateLogLambdaQueryWrapper = new LambdaQueryWrapper<>();
             configProjectOperateLogLambdaQueryWrapper
-                    .eq(ConfigProjectOperateLog::getProjectId,project.getProjectId());
+                    .eq(ConfigProjectOperateLog::getProjectId, project.getProjectId());
             List<ConfigProjectOperateLog> configProjectOperateLogList = configProjectOperateLogMapper.selectList(configProjectOperateLogLambdaQueryWrapper);
             List<Map> configProjectOperateLogMap = new ArrayList<>();
             for (ConfigProjectOperateLog configProjectOperateLog : configProjectOperateLogList) {
                 Map ConfigProjectOperateLog = new HashMap();
-                ConfigProjectOperateLog.put("opTime",configProjectOperateLog.getCreateTime());
-                ConfigProjectOperateLog.put("progress",configProjectOperateLog.getProgress());
-                ConfigProjectOperateLog.put("oper",userFeign.getUserByKey(configProjectOperateLog.getOperater()).getData());
+                ConfigProjectOperateLog.put("opTime", configProjectOperateLog.getCreateTime());
+                ConfigProjectOperateLog.put("progress", configProjectOperateLog.getProgress());
+                ConfigProjectOperateLog.put("oper", userFeign.getUserByKey(configProjectOperateLog.getOperater()).getData());
                 configProjectOperateLogMap.add(ConfigProjectOperateLog);
             }
-            projectMap.put("ops",configProjectOperateLogMap);
+            projectMap.put("ops", configProjectOperateLogMap);
             result.add(projectMap);
         }
         return new Result(EnumResult.SUCCESS).setData(result);
@@ -164,40 +169,46 @@ public class ProjectServiceImpl implements ProjectService {
             /**
              * 删除 不再需要的产品
              */
-            for (Product product : project.getDeletedProductList()) {
-                LambdaQueryWrapper<ProjectProduct> projectProductLambdaQueryWrapper = new LambdaQueryWrapper<>();
-                projectProductLambdaQueryWrapper
-                        .eq(ProjectProduct::getProjectId, project.getProjectId())
-                        .eq(ProjectProduct::getProductId, product.getProductId())
-                        .eq(ProjectProduct::getProductVersion, product.getProdVersion());
-                projectProductMapper.delete(projectProductLambdaQueryWrapper);
+            if (project.getDeletedProductList() != null) {
+                for (Product product : project.getDeletedProductList()) {
+                    LambdaQueryWrapper<ProjectProduct> projectProductLambdaQueryWrapper = new LambdaQueryWrapper<>();
+                    projectProductLambdaQueryWrapper
+                            .eq(ProjectProduct::getProjectId, project.getProjectId())
+                            .eq(ProjectProduct::getProductId, product.getProductId())
+                            .eq(ProjectProduct::getProductVersion, product.getProdVersion());
+                    projectProductMapper.delete(projectProductLambdaQueryWrapper);
+                }
             }
         }
         {
             /**
              * 添加需要的产品
              */
-            for (Product product : project.getAppendProductList()) {
-                ProjectProduct projectProduct = new ProjectProduct();
-                projectProduct.setProjectId(project.getProjectId());
-                projectProduct.setProductVersion(product.getProdVersion());
-                projectProduct.setProductId(product.getProductId());
-                projectProductMapper.insert(projectProduct);
+            if (project.getAppendProductList() != null) {
+                for (Product product : project.getAppendProductList()) {
+                    ProjectProduct projectProduct = new ProjectProduct();
+                    projectProduct.setProjectId(project.getProjectId());
+                    projectProduct.setProductVersion(product.getProdVersion());
+                    projectProduct.setProductId(product.getProductId());
+                    projectProductMapper.insert(projectProduct);
+                }
             }
         }
         {
             /**
              * 更新项目附件（删除原来附件）。添加后续更新附件
              */
-            LambdaQueryWrapper<ProjectAssets> projectAssetsLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            projectAssetsLambdaQueryWrapper
-                    .eq(ProjectAssets::getProjectId,project.getProjectId());
-            projectAssetsMapper.delete(projectAssetsLambdaQueryWrapper);
-            for (Assets assets : project.getAssetsList()) {
-                ProjectAssets projectAssets = new ProjectAssets();
-                projectAssets.setProjectId(project.getProjectId());
-                projectAssets.setAssetsId(assets.getId());
-                projectAssetsMapper.insert(projectAssets);
+            if (project.getAssetsList() != null) {
+                LambdaQueryWrapper<ProjectAssets> projectAssetsLambdaQueryWrapper = new LambdaQueryWrapper<>();
+                projectAssetsLambdaQueryWrapper
+                        .eq(ProjectAssets::getProjectId, project.getProjectId());
+                projectAssetsMapper.delete(projectAssetsLambdaQueryWrapper);
+                for (Assets assets : project.getAssetsList()) {
+                    ProjectAssets projectAssets = new ProjectAssets();
+                    projectAssets.setProjectId(project.getProjectId());
+                    projectAssets.setAssetsId(assets.getId());
+                    projectAssetsMapper.insert(projectAssets);
+                }
             }
         }
         return new Result(EnumResult.SUCCESS);
@@ -208,46 +219,64 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectMapper.selectById(projectId);
         LambdaQueryWrapper<ProjectProduct> projectProductLambdaQueryWrapper = new LambdaQueryWrapper<>();
         projectProductLambdaQueryWrapper
-                .eq(ProjectProduct::getProjectId,projectId);
+                .eq(ProjectProduct::getProjectId, projectId);
         List<ProjectProduct> projectProducts = projectProductMapper.selectList(projectProductLambdaQueryWrapper);
         List<Map> productList = new ArrayList();
         for (ProjectProduct projectProduct : projectProducts) {
             Result<Map> productDetails = productFeign.getProductDetails(projectProduct.getProductId(), projectProduct.getProductVersion());
             Map data = productDetails.getData();
             Map product = new HashMap();
-            product.put("productId",projectProduct.getProductId());
-            product.put("productName",data.get("productName"));
-            product.put("prodVersion",data.get("prodVersion"));
+            product.put("productId", projectProduct.getProductId());
+            product.put("productName", data.get("productName"));
+            product.put("prodVersion", data.get("prodVersion"));
             productList.add(product);
         }
         Map result = new HashMap();
-        result.put("projectName",project.getProjectName());
-        result.put("contractAmount",project.getAmount());
-        result.put("projectAddress",project.getProjectAddress());
-        result.put("customerName",project.getProjectCustomName());
-        result.put("contractNumber",project.getProjectNumber());
-        result.put("beforeSelectedProduct",productList);
-        result.put("projectManager",userFeign.getUserByKey(project.getManagerId()).getData().getRealname());
-        result.put("progress",project.getProgress());
+        result.put("projectName", project.getProjectName());
+        result.put("contractAmount", project.getAmount());
+        result.put("projectAddress", project.getProjectAddress());
+        result.put("customerName", project.getProjectCustomName());
+        result.put("contractNumber", project.getProjectNumber());
+        result.put("beforeSelectedProduct", productList);
+        result.put("projectManager", userFeign.getUserByKey(project.getManagerId()).getData().getRealname());
+        result.put("progress", project.getProgress());
         LambdaQueryWrapper<ProjectAssets> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper
-                .eq(ProjectAssets::getProjectId,project.getProjectId());
+                .eq(ProjectAssets::getProjectId, project.getProjectId());
         List<ProjectAssets> projectAssets = projectAssetsMapper.selectList(lambdaQueryWrapper);
         List<Assets> assetsList = projectAssets.parallelStream().map(item -> attachedFeign.getAttachedById(item.getAssetsId()).getData()).collect(Collectors.toList());
-        result.put("assetsList",assetsList);
+        result.put("assetsList", assetsList);
         LambdaQueryWrapper<ConfigProjectOperateLog> configProjectOperateLogLambdaQueryWrapper = new LambdaQueryWrapper<>();
         configProjectOperateLogLambdaQueryWrapper
-                .eq(ConfigProjectOperateLog::getProjectId,project.getProjectId());
+                .eq(ConfigProjectOperateLog::getProjectId, project.getProjectId());
         List<ConfigProjectOperateLog> configProjectOperateLogList = configProjectOperateLogMapper.selectList(configProjectOperateLogLambdaQueryWrapper);
         List<Map> configProjectOperateLogMap = new ArrayList<>();
         for (ConfigProjectOperateLog configProjectOperateLog : configProjectOperateLogList) {
             Map ConfigProjectOperateLog = new HashMap();
-            ConfigProjectOperateLog.put("opTime",configProjectOperateLog.getCreateTime());
-            ConfigProjectOperateLog.put("progress",configProjectOperateLog.getProgress());
-            ConfigProjectOperateLog.put("oper",userFeign.getUserByKey(configProjectOperateLog.getOperater()).getData());
+            ConfigProjectOperateLog.put("opTime", configProjectOperateLog.getCreateTime());
+            ConfigProjectOperateLog.put("progress", configProjectOperateLog.getProgress());
+            ConfigProjectOperateLog.put("oper", userFeign.getUserByKey(configProjectOperateLog.getOperater()).getData());
             configProjectOperateLogMap.add(ConfigProjectOperateLog);
         }
-        result.put("ops",configProjectOperateLogMap);
+        result.put("ops", configProjectOperateLogMap);
+        List<Integer> projectPackageId = administerFeign.getProjectPackage(projectId).getData();
+        List<Object> projectPackageList = projectPackageId.parallelStream().map(item -> attachedFeign.getAttachedById(item).getData()).collect(Collectors.toList());
+        result.put("projectPackage", projectPackageList);
         return new Result(EnumResult.SUCCESS).setData(result);
+    }
+
+    @Override
+    public Result<List<ConfigProjectOperateLog>> getProjectOperateLog(Integer projectId) {
+        LambdaQueryWrapper<ConfigProjectOperateLog> configProjectOperateLogLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        configProjectOperateLogLambdaQueryWrapper
+                .eq(ConfigProjectOperateLog::getProjectId, projectId);
+        List<ConfigProjectOperateLog> configProjectOperateLogList = configProjectOperateLogMapper.selectList(configProjectOperateLogLambdaQueryWrapper);
+        return new Result<List<ConfigProjectOperateLog>>(EnumResult.SUCCESS).setData(configProjectOperateLogList);
+    }
+
+    @Override
+    public Result writeProjectOperateLog(ConfigProjectOperateLog projectOperateLog) {
+        configProjectOperateLogMapper.insert(projectOperateLog);
+        return new Result(EnumResult.SUCCESS);
     }
 }

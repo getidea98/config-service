@@ -1,7 +1,10 @@
 package top.getidea.config.project.service;
 
+import top.getidea.config.common.entity.project.ConfigProjectOperateLog;
 import top.getidea.config.common.entity.project.Project;
 import top.getidea.config.common.util.Result;
+
+import java.util.List;
 
 /**
  * @author getidea
@@ -16,4 +19,8 @@ public interface ProjectService {
     Result editProject(Project project);
 
     Result getProjectDetail(Integer projectId);
+
+    Result<List<ConfigProjectOperateLog>> getProjectOperateLog(Integer projectId);
+
+    Result writeProjectOperateLog(ConfigProjectOperateLog projectOperateLog);
 }

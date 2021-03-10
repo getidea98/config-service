@@ -23,10 +23,10 @@
     <packaging>pom</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-cloud-dependencies.version>Hoxton.SR8</spring-cloud-dependencies.version>
-        <spring-cloud-alibaba-dependencies.version>2.2.4.RELEASE</spring-cloud-alibaba-dependencies.version>
-        <spring-boot-dependencies.version>2.3.2.RELEASE</spring-boot-dependencies.version>
-        <mybatis-spring-boot-starter>2.1.4</mybatis-spring-boot-starter>
+        <spring-cloud-dependencies-version>Hoxton.SR8</spring-cloud-dependencies-version>
+        <spring-cloud-alibaba-dependencies-version>2.2.4.RELEASE</spring-cloud-alibaba-dependencies-version>
+        <spring-boot-dependencies-version>2.3.2.RELEASE</spring-boot-dependencies-version>
+        <mybatis-spring-boot-starter-version>2.1.4</mybatis-spring-boot-starter-version>
         <mybatis-plus-boot-starter-version>3.4.2</mybatis-plus-boot-starter-version>
         <validation-api-version>2.0.1.Final</validation-api-version>
         <jasypt-spring-boot-starter-version>3.0.3</jasypt-spring-boot-starter-version>
@@ -35,6 +35,7 @@
         <springfox-swagger-ui-version>3.0.0</springfox-swagger-ui-version>
         <hutool-all-version>5.5.7</hutool-all-version>
         <fastjson-version>1.2.73</fastjson-version>
+        <aliyun-oss-spring-boot-starter-version>2.2.4.RELEASE</aliyun-oss-spring-boot-starter-version>
     </properties>
 
     <dependencyManagement>
@@ -42,28 +43,28 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud-dependencies.version}</version>
+                <version>${spring-cloud-dependencies-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot-dependencies.version}</version>
+                <version>${spring-boot-dependencies-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-cloud-alibaba-dependencies.version}</version>
+                <version>${spring-cloud-alibaba-dependencies-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-spring-boot-starter}</version>
+                <version>${mybatis-spring-boot-starter-version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.validation</groupId>
@@ -107,7 +108,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <build>
         <plugins>
             <plugin>

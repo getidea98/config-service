@@ -38,7 +38,7 @@ public interface ProductService {
      */
     Result getList(Integer pageNum, Integer pageSize, String key);
 
-    Result getProducts(Integer productId);
+    Result<Map<String, Object>> getProducts(Integer productId);
 
     /**
      * 根据请求头参数 【username】，查询用户管理的产品的数量
@@ -51,11 +51,11 @@ public interface ProductService {
     /**
      * 产品的数量
      *
-     * @return
+     * @return 返回产品的数量
      */
-    Result productOfNumber();
+    Result<Integer> productOfNumber();
 
-    Result<Map> getProductDetails(Integer id, String productVersion);
+    Result<Map<String,Object>> getProductDetails(Integer id, String productVersion);
 
     /**
      * 更新产品
