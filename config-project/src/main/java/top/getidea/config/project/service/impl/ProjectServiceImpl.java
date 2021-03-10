@@ -38,13 +38,13 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectAssetsMapper projectAssetsMapper;
     @Autowired
     private ProjectProductMapper projectProductMapper;
-    @Resource(name = "userFeign")
+    @Autowired
     private UserFeign userFeign;
-    @Resource(name = "productFeign")
+    @Autowired
     private ProductFeign productFeign;
-    @Resource(name = "attachedFeign")
+    @Autowired
     private AttachedFeign attachedFeign;
-    @Resource(name = "administerFeign")
+    @Autowired
     private AdministerFeign administerFeign;
 
     @Override
