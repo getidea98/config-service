@@ -1,6 +1,5 @@
 package top.getidea.config.administer.controller;
 
-
 import org.springframework.web.bind.annotation.*;
 import top.getidea.config.administer.service.AdminService;
 import top.getidea.config.common.dto.ProjectJarDTO;
@@ -33,5 +32,4 @@ public class AdminController {
     public Result<List<Integer>> getProjectPackage(@RequestParam("projectId") Integer projectId){
         return adminService.getProjectPackage(projectId);
     }
-
 }

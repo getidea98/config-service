@@ -11,9 +11,7 @@
         <module>config-gateway</module>
         <module>config-product</module>
         <module>config-project</module>
-        <module>config-third-party</module>
         <module>config-userManager</module>
-        <module>config-view</module>
     </modules>
     <groupId>top.getidea.config</groupId>
     <artifactId>config</artifactId>

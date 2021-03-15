@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: config-third-party
-  cloud:
-    nacos:
-      server-addr: tx.getidea.top:8848
-      config:
-        file-extension: yml
