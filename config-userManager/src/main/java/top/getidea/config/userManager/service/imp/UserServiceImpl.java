@@ -12,10 +12,7 @@ import top.getidea.config.userManager.mapper.RoleUserMapper;
 import top.getidea.config.userManager.mapper.UserMapper;
 import top.getidea.config.userManager.service.UserService;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -67,6 +64,11 @@ public class UserServiceImpl implements UserService {
         List<User> users = userMapper.selectList(lambdaQueryWrapper);
         users = users.parallelStream().filter(user -> isProductManager(user.getId(), role)).collect(Collectors.toList());
         return new Result<List<User>>(EnumResult.SUCCESS).setData(users);
+    }
+
+    @Override
+    public Result login(Integer username, String password) {
+        return null;
     }
 
     /**

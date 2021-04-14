@@ -19,4 +19,6 @@ public interface UserService {
     Result<User> getUserByUsername(String username,String usernameOfHeader);
 
     Result<List<User>> getAllUser(Integer role);
+
+    Result<List<User>> login(Integer username, String password);
 }

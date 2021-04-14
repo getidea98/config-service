@@ -75,7 +75,6 @@ public class ProductController {
         return productService.appendProduct(productMetaDTO.getProductMeta(), productMetaDTO.getProduct());
     }
 
-    @DeleteMapping("/delete")
     public Result deleteProduct(@RequestParam("id") Integer[] ids) {
         return productService.deleteProduct(ids);
     }

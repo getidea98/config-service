@@ -32,4 +32,9 @@ public class AdminController {
     public Result<List<Integer>> getProjectPackage(@RequestParam("projectId") Integer projectId){
         return adminService.getProjectPackage(projectId);
     }
+
+    @GetMapping("/SessionNumber")
+    public Result sessionNumber(@RequestHeader("username") String username){
+        return adminService.sessionNumber(username);
+    }
 }

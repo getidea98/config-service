@@ -26,7 +26,7 @@
                 project_name LIKE concat ( '%', #{key}, '%' )
             </if>
             AND is_delete = false
-            AND progress = 3
+            AND progress = 2
             LIMIT #{offset}, #{rows}
         </trim>
     </select>

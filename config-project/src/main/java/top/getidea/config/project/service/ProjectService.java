@@ -10,7 +10,7 @@ import java.util.List;
  * @author getidea
  */
 public interface ProjectService {
-    Result getList(Integer pageNum, Integer pageSize, String key);
+    Result getList(Integer pageNum, Integer pageSize, String scope, String key, String name);
 
     Result addProject(Project project);
 
@@ -23,4 +23,8 @@ public interface ProjectService {
     Result<List<ConfigProjectOperateLog>> getProjectOperateLog(Integer projectId);
 
     Result writeProjectOperateLog(ConfigProjectOperateLog projectOperateLog);
+
+    Result deploy(Integer projectId, Integer deployerId, String username);
+
+    Result getSessionNumber(String username);
 }

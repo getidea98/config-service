@@ -11,6 +11,7 @@ public enum EnumResult {
     ERROR_TOKEN(10004,"TOKEN校验错误"),
     SUCCESS(10200,"成功"),
     PARAM_SHORTER(200001,"参数长度不合法"),
+    NOT_FOUND(20404,"未找到结果"),
     PARAM_LONGER(200001,"参数长度不合法");
 
 

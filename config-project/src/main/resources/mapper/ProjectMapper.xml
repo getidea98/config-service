@@ -23,7 +23,10 @@
         WHERE
         <trim prefixOverrides="AND">
             <if test="key != null and key != ''">
-                project_name LIKE concat ( '%', #{key}, '%' )
+                AND project_name LIKE concat ( '%', #{key}, '%' )
+            </if>
+            <if test="projectManager != null and projectManager != ''">
+                AND manager_id = #{projectManager}
             </if>
             AND is_delete = false
             LIMIT #{offset}, #{rows}

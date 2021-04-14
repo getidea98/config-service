@@ -25,6 +25,6 @@ public interface ProjectFeign {
     Result getProjectDetail(@RequestParam("projectId") Integer projectId);
     @PutMapping("/api/project/editProject")
     Result editProject(@RequestBody Project project);
-    @PutMapping("/api/project/getProjectOperateLog")
+    @PutMapping("/api/project/writeProjectOperateLog")
     Result writeProjectOperateLog(@RequestBody ConfigProjectOperateLog projectOperateLog);
 }

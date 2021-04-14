@@ -14,5 +14,5 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ProjectMapper extends BaseMapper<Project> {
-    List<Project> getList(@Param("offset") Integer pageNum, @Param("rows")Integer pageSize,@Param("key") String key);
+    List<Project> getList(@Param("offset") Integer pageNum, @Param("rows") Integer pageSize, @Param("projectManager") Integer projectManager, @Param("key") String key);
 }

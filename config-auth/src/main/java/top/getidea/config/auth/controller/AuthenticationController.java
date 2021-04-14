@@ -29,7 +29,7 @@ public class AuthenticationController {
             @ApiResponse(code = 10003, message = "密码或账号不正确")
     })
     @GetMapping("/password")
-    public Result validatePassword(@RequestParam(value = "username",required = true) String username, @RequestParam(value = "password",required = true) String password) {
+    public Result validatePassword(String username, String password) {
         return authenticationService.validatePassword(username,password);
     }
 

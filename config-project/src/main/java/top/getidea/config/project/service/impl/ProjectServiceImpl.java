@@ -10,8 +10,10 @@ import top.getidea.config.common.entity.product.Product;
 import top.getidea.config.common.entity.project.ConfigProjectOperateLog;
 import top.getidea.config.common.entity.project.Project;
 import top.getidea.config.common.entity.project.ProjectProduct;
+import top.getidea.config.common.entity.userManager.User;
 import top.getidea.config.common.feign.administer.AdministerFeign;
 import top.getidea.config.common.feign.attached.AttachedFeign;
+import top.getidea.config.common.feign.deploy.DeploymentFeign;
 import top.getidea.config.common.feign.product.ProductFeign;
 import top.getidea.config.common.feign.usermanager.UserFeign;
 import top.getidea.config.common.util.Result;
@@ -21,7 +23,6 @@ import top.getidea.config.project.mapper.ProjectMapper;
 import top.getidea.config.project.mapper.ProjectProductMapper;
 import top.getidea.config.project.service.ProjectService;
 
-import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -46,12 +47,21 @@ public class ProjectServiceImpl implements ProjectService {
     private AttachedFeign attachedFeign;
     @Autowired
     private AdministerFeign administerFeign;
+    @Autowired
+    private DeploymentFeign deploymentFeign;
 
     @Override
-    public Result getList(Integer pageNum, Integer pageSize, String key) {
+    public Result getList(Integer pageNum, Integer pageSize, String scope, String key, String username) {
         Integer offSet = pageNum == 0 ? 0 : (pageNum - 1) * pageSize;
         Integer rows = pageSize;
-        List<Project> projectList = projectMapper.getList(offSet, rows, key);
+        List<Project> projectList = null;
+        if ("all".equals(scope)){
+            projectList = projectMapper.getList(offSet, rows, null, key);
+        }else{
+            Result<User> userByUsername = userFeign.getUserByUsernameParam(username);
+            Integer projectManager = userByUsername.getData().getId();
+            projectList = projectMapper.getList(offSet, rows, projectManager, key);
+        }
         List<Map> result = new ArrayList<>();
         for (Project project : projectList) {
             Map projectMap = new HashMap();
@@ -278,5 +288,60 @@ public class ProjectServiceImpl implements ProjectService {
     public Result writeProjectOperateLog(ConfigProjectOperateLog projectOperateLog) {
         configProjectOperateLogMapper.insert(projectOperateLog);
         return new Result(EnumResult.SUCCESS);
+    }
+
+    /**
+     * 处理 指定部署人员的操作。 projectId， deployerId
+     * 1。 项目状态调整为 4
+     * 2。 添加操作日志 operater 为 deployerId
+     * @param projectId
+     * @param deployerId
+     * @param username
+     * @return
+     */
+    @Override
+    public Result deploy(Integer projectId, Integer deployerId, String username) {
+        Project project = new Project();
+        project.setProjectId(projectId);
+        project.setProgress(4);
+        projectMapper.updateById(project);
+        ConfigProjectOperateLog configProjectOperateLog = new ConfigProjectOperateLog();
+        configProjectOperateLog.setOperater(userFeign.getUserByUsernameParam(username).getData().getId());
+        configProjectOperateLog.setProjectId(projectId);
+        configProjectOperateLog.setProgress(4);
+        configProjectOperateLog.setCreateTime(new Date());
+        writeProjectOperateLog(configProjectOperateLog);
+        deploymentFeign.add(projectId,deployerId);
+        return new Result(EnumResult.SUCCESS);
+    }
+
+    @Override
+    public Result getSessionNumber(String username) {
+        User projectManager = userFeign.getUserByUsernameParam(username).getData();
+        if (projectManager == null) {
+            return new Result(EnumResult.NOT_FOUND);
+        }
+        LambdaQueryWrapper<Project> projectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        projectLambdaQueryWrapper
+                .eq(Project::getManagerId, projectManager.getId());
+        Integer allSession = projectMapper.selectCount(projectLambdaQueryWrapper);
+
+        projectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        projectLambdaQueryWrapper
+                .eq(Project::getManagerId, projectManager.getId())
+                .and(wrapper -> wrapper.in(Project::getProgress,1,3));
+        Integer uncompleteOfSession = projectMapper.selectCount(projectLambdaQueryWrapper);
+
+
+        projectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        projectLambdaQueryWrapper
+                .eq(Project::getManagerId, projectManager.getId())
+                .and(wrapper -> wrapper.eq(Project::getProgress,4));
+        Integer completeOfSession = projectMapper.selectCount(projectLambdaQueryWrapper);
+        Map<String,Integer> re = new HashMap<>();
+        re.put("allSession",allSession);
+        re.put("uncompleteOfSession",uncompleteOfSession);
+        re.put("completeOfSession",completeOfSession);
+        return new Result(EnumResult.SUCCESS).setData(re);
     }
 }

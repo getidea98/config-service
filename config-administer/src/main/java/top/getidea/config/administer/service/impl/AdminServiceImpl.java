@@ -11,6 +11,7 @@ import top.getidea.config.common.dto.ProjectJarDTO;
 import top.getidea.config.common.entity.project.ConfigProjectOperateLog;
 import top.getidea.config.common.entity.project.Project;
 import top.getidea.config.common.entity.project.ProjectPackage;
+import top.getidea.config.common.entity.userManager.User;
 import top.getidea.config.common.feign.project.ProjectFeign;
 import top.getidea.config.common.feign.usermanager.UserFeign;
 import top.getidea.config.common.util.Result;
@@ -76,7 +77,7 @@ public class AdminServiceImpl implements AdminService {
     public Result edit(ProjectJarDTO projectJarDTO) {
         Project project = new Project();
         project.setProjectId(projectJarDTO.getProjectId());
-        project.setProgress(4);
+        project.setProgress(3);
         project.setModifyTime(new Date());
         projectFeign.editProject(project);
         projectJarDTO.getIds().parallelStream().peek(item ->{
@@ -102,5 +103,15 @@ public class AdminServiceImpl implements AdminService {
         List<ProjectPackage> projectPackages = projectPackageMapper.selectList(projectPackageLambdaQueryWrapper);
         List<Integer> collect = projectPackages.parallelStream().map(item -> item.getAssetsId()).collect(Collectors.toList());
         return new Result<List<Integer>>(EnumResult.SUCCESS).setData(collect);
+    }
+
+    @Override
+    public Result sessionNumber(String username) {
+        User user= userFeign.getUserByUsernameParam(username).getData();
+        if (user == null) {
+            return new Result(EnumResult.NOT_FOUND);
+        }
+
+        return null;
     }
 }

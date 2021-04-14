@@ -4,11 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.getidea.config.common.ResultEnum.EnumResult;
+import top.getidea.config.common.entity.deploy.DeployInfo;
 import top.getidea.config.common.entity.project.ConfigProjectOperateLog;
 import top.getidea.config.common.entity.project.Project;
+import top.getidea.config.common.entity.userManager.User;
 import top.getidea.config.common.feign.project.ProjectFeign;
 import top.getidea.config.common.feign.usermanager.UserFeign;
 import top.getidea.config.common.util.Result;
+import top.getidea.config.deployment.mapper.DeployInfoMapper;
 import top.getidea.config.deployment.mapper.DeploymentMapper;
 import top.getidea.config.deployment.service.DeploymentService;
 
@@ -23,6 +26,8 @@ public class DeploymentServiceImpl implements DeploymentService {
     private UserFeign userFeign;
     @Autowired
     private ProjectFeign projectFeign;
+    @Autowired
+    private DeployInfoMapper deployInfoMapper;
     @Override
     public Result getList(Integer pageNum, Integer pageSize, String key) {
         Integer offSet = pageNum == 0 ? 0 : (pageNum - 1) * pageSize;
@@ -71,5 +76,47 @@ public class DeploymentServiceImpl implements DeploymentService {
         configProjectOperateLog.setOperater(50000);
         projectFeign.writeProjectOperateLog(configProjectOperateLog);
         return new Result(EnumResult.SUCCESS);
+    }
+
+    @Override
+    public Result add(Integer projectId, Integer deployerId) {
+        DeployInfo deployInfo = new DeployInfo();
+        deployInfo.setDeployerId(deployerId);
+        deployInfo.setProjectId(projectId);
+        deployInfoMapper.insert(deployInfo);
+        return new Result(EnumResult.SUCCESS);
+    }
+
+    @Override
+    public Result getSessionNumber(String username) {
+        User deployer = userFeign.getUserByUsernameParam(username).getData();
+        if(deployer == null){
+            return new Result(EnumResult.NOT_FOUND);
+        }
+        LambdaQueryWrapper<DeployInfo> deployInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        deployInfoLambdaQueryWrapper
+                .eq(DeployInfo::getDeployerId,deployer.getId());
+        Integer allOfSession = deployInfoMapper.selectCount(deployInfoLambdaQueryWrapper);
+        deployInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        deployInfoLambdaQueryWrapper
+                .eq(DeployInfo::getDeployerId,deployer.getId())
+                .eq(DeployInfo::getProgress,3);
+        Integer completedOfSession = deployInfoMapper.selectCount(deployInfoLambdaQueryWrapper);
+        deployInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        deployInfoLambdaQueryWrapper
+                .eq(DeployInfo::getDeployerId,deployer.getId())
+                .eq(DeployInfo::getProgress,2);
+        Integer completingOfSession = deployInfoMapper.selectCount(deployInfoLambdaQueryWrapper);
+        deployInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        deployInfoLambdaQueryWrapper
+                .eq(DeployInfo::getDeployerId,deployer.getId())
+                .eq(DeployInfo::getProgress,1);
+        Integer uncompleteOfSession = deployInfoMapper.selectCount(deployInfoLambdaQueryWrapper);
+        Map<String,Integer> re = new HashMap<>();
+        re.put("allOfSession",allOfSession);
+        re.put("completedOfSession",completedOfSession);
+        re.put("completingOfSession",completingOfSession);
+        re.put("uncompleteOfSession",uncompleteOfSession);
+        return new Result(EnumResult.SUCCESS).setData(re);
     }
 }

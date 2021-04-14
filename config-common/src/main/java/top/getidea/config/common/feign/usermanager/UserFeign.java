@@ -32,4 +32,8 @@ public interface UserFeign {
 
     @GetMapping("/api/userManager/getUserByKey/getUserByUsername")
     Result<User> getUserByUsername(@RequestParam(value = "username",required = false) String username, @RequestHeader("username") String usernameOfHeader);
+
+    @GetMapping("/api/userManager/getUserByUsernameParam")
+    Result<User> getUserByUsernameParam(@RequestParam(value = "username") String username);
+
 }

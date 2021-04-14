@@ -16,4 +16,6 @@ public interface AdminService {
     Result edit(ProjectJarDTO projectJarDTO);
 
     Result<List<Integer>> getProjectPackage(Integer projectId);
+
+    Result sessionNumber(String username);
 }

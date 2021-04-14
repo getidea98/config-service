@@ -7,4 +7,8 @@ public interface DeploymentService {
     Result getList(Integer pageNum, Integer pageSize, String key);
 
     Result edit(Integer projectId);
+
+    Result add(Integer projectId, Integer deployerId);
+
+    Result getSessionNumber(String username);
 }

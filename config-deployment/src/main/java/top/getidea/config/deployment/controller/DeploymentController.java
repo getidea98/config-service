@@ -25,4 +25,17 @@ public class DeploymentController {
     public Result edit(@RequestParam("projectId") Integer projectId){
         return deploymentService.edit(projectId);
     }
+
+    /**
+     * 给 deployerid 分配任务
+     * @return
+     */
+    @PutMapping("/add")
+    public Result add(@RequestParam("projectId") Integer projectId, @RequestParam("deployerId") Integer deployerId){
+        return deploymentService.add(projectId,deployerId);
+    }
+    @GetMapping("sessionNumber")
+    public Result getSessionNumber(@RequestHeader("username") String username){
+        return deploymentService.getSessionNumber(username);
+    }
 }

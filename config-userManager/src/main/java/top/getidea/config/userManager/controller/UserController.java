@@ -34,8 +34,18 @@ public class UserController {
         return userService.getUserByUsername(username,usernameOfHeader);
     }
 
+    @GetMapping("/getUserByUsernameParam")
+    public Result<User> getUserByUsernameParam(@RequestParam(value = "username") String username) {
+        return userService.getUserByUsername(username,null);
+    }
+
     @GetMapping("/getAllUser")
     public Result<List<User>> getAllUser(@RequestParam("role") Integer role) {
         return userService.getAllUser(role);
+    }
+
+    @PostMapping("/login")
+    public Result<List<User>> login(@RequestParam("userName") Integer username,@RequestParam("password") String password) {
+        return userService.login(username,password);
     }
 }
