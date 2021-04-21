@@ -22,7 +22,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<page-header [title]=\"null\"></page-header>\n<nz-card [nzBordered]=\"false\">\n  <div nz-row>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">我的项目</span>\n      <span class=\"d-block display-2\">{{allSession}}个项目</span>\n      <em></em>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">待处理</span>\n      <span class=\"d-block display-2\">{{uncompleteOfSession}}个任务</span>\n      <em></em>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">已完成</span>\n      <span class=\"d-block display-2\">{{completeOfSession}}个任务</span>\n    </div>\n  </div>\n</nz-card>\n\n<nz-card [nzHoverable]=\"false\" [nzBordered]=\"false\">\n  <div class=\"d-flex align-items-center mb-lg\">\n    <h3 class=\"flex-1 text-lg\">产品列表</h3>\n    <div>\n      <nz-radio-group [(ngModel)]=\"scope\" class=\"mr-md\">\n        <label nz-radio-button [nzValue]=\"'all'\">\n          <span>全部</span>\n        </label>\n        <label nz-radio-button [nzValue]=\"'myself'\">\n          <span>仅看自己</span>\n        </label>\n      </nz-radio-group>\n      <nz-input-group [nzSuffix]=\"suffixIconSearch\" style=\"width: 270px;\">\n        <input type=\"text\" nz-input placeholder=\"请输入\" [(ngModel)]=\"serchKey\" (keyup)=\"searchChanged($event)\" />\n      </nz-input-group>\n      <ng-template #suffixIconSearch>\n        <i nz-icon nzType=\"search\" (click)=\"search()\"></i>\n      </ng-template>\n    </div>\n  </div>\n  <button nz-button (click)=\"openAdd()\" [nzType]=\"'dashed'\" nzBlock class=\"mb-sm\">\n    <i nz-icon nzType=\"plus\"></i>\n    <span>添加</span>\n  </button>\n</nz-card>\n\n<nz-list [nzDataSource]='data' [nzRenderItem]=\"item\" [nzLoading]=\"loading\">\n  <ng-template #item let-item>\n    <nz-list-item>\n      <nz-card [nzHoverable]=\"false\" [nzBordered]=\"false\" style='width: 100%' [nzTitle]=\"item.projectName\"\n        [nzExtra]=\"extraTemplate\">\n        <sv-container size=\"large\">\n          <sv label=\"产品经理\">{{item.manager}}</sv>\n          <sv label=\"项目合同额（万元）\">{{item.amount}}</sv>\n          <sv label=\"客户名称\">{{item.customerName}}</sv>\n          <sv label=\"合同编号\">{{item.customerName}}</sv>\n        </sv-container>\n        <nz-divider></nz-divider>\n        <config-app-progress [item]=\"item\"></config-app-progress>\n        <div class=\"steps-content\"></div>\n      </nz-card>\n      <ng-template #extraTemplate>\n        <nz-list-item [nzActions]=\"[apply, edit, deploy, op]\">\n          <ng-template #apply>\n            <a *ngIf=\"item.progress == 1\" (click)=\"openApply(item.projectId)\">申请</a>\n          </ng-template>\n          <ng-template #edit>\n            <a *ngIf=\"item.progress == 1\" (click)=\"openEdit(item.projectId)\">编辑</a>\n          </ng-template>\n          <ng-template #deploy>\n            <a *ngIf=\"item.progress == 3\" (click)=\"openDeploy(item.projectId)\">部署</a>\n          </ng-template>\n          <ng-template #op>\n            <a class=\"ant-dropdown-link\" nz-dropdown [nzDropdownMenu]=\"opMenu\">\n              更多\n              <i nz-icon nzType=\"down\"></i>\n            </a>\n            <nz-dropdown-menu #opMenu=\"nzDropdownMenu\">\n              <ul nz-menu>\n                <li nz-menu-item (click)=\"openDetail(item.projectId)\">查看详情</li>\n                <li nz-menu-item *ngIf=\"item.progress == 1\" (click)=\"openEdit(item.projectId)\">编辑</li>\n                <li nz-menu-item *ngIf=\"item.progress == 1\" (click)=\"openApply(item.projectId)\">申请</li>\n              </ul>\n            </nz-dropdown-menu>\n          </ng-template>\n        </nz-list-item>\n      </ng-template>\n    </nz-list-item>\n  </ng-template>\n</nz-list>");
+/* harmony default export */ __webpack_exports__["default"] = ("<page-header [title]=\"null\"></page-header>\n<nz-card [nzBordered]=\"false\">\n  <div nz-row>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">我的项目</span>\n      <span class=\"d-block display-2\">8个项目</span>\n      <em></em>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">本周/月更新次数</span>\n      <span class=\"d-block display-2\">2/7</span>\n      <em></em>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">本周需求完成数量</span>\n      <span class=\"d-block display-2\">24个</span>\n    </div>\n  </div>\n</nz-card>\n\n<nz-card [nzHoverable]=\"false\" [nzBordered]=\"false\">\n  <div class=\"d-flex align-items-center mb-lg\">\n    <h3 class=\"flex-1 text-lg\">产品列表</h3>\n    <div>\n      <nz-radio-group [(ngModel)]=\"q.status\" class=\"mr-md\">\n        <label nz-radio-button [nzValue]=\"'all'\">\n          <span>全部</span>\n        </label>\n        <label nz-radio-button [nzValue]=\"'progress'\">\n          <span>仅看自己</span>\n        </label>\n      </nz-radio-group>\n      <nz-input-group nzSuffixIcon=\"search\" style=\"width: 270px;\">\n        <input type=\"text\" nz-input placeholder=\"请输入\" [(ngModel)]=\"q.q\" name=\"q\" />\n      </nz-input-group>\n    </div>\n  </div>\n  <button nz-button (click)=\"openAdd()\" [nzType]=\"'dashed'\" nzBlock class=\"mb-sm\">\n    <i nz-icon nzType=\"plus\"></i>\n    <span>添加</span>\n  </button>\n</nz-card>\n\n<nz-list [nzDataSource]='data' [nzRenderItem]=\"item\" [nzLoading]=\"loading\">\n  <ng-template #item let-item>\n    <nz-list-item>\n      <nz-card [nzHoverable]=\"false\" [nzBordered]=\"false\" style='width: 100%' [nzTitle]=\"item.projectName\"\n        [nzExtra]=\"extraTemplate\">\n        <sv-container size=\"large\">\n          <sv label=\"产品经理\">{{item.manager}}</sv>\n          <sv label=\"项目合同额（万元）\">{{item.amount}}</sv>\n          <sv label=\"客户名称\">{{item.customerName}}</sv>\n          <sv label=\"合同编号\">{{item.customerName}}</sv>\n        </sv-container>\n        <nz-divider></nz-divider>\n        <config-app-progress [item]=\"item\"></config-app-progress>\n        <div class=\"steps-content\"></div>\n      </nz-card>\n      <ng-template #extraTemplate>\n        <nz-list-item [nzActions]=\"[apply, edit, op]\">\n          <ng-template #apply>\n            <a *ngIf=\"item.progress == 1\" (click)=\"openApply(item.projectId)\">申请</a>\n          </ng-template>\n          <ng-template #edit>\n            <a *ngIf=\"item.progress == 1\" (click)=\"openEdit(item.projectId)\">编辑</a>\n          </ng-template>\n          <ng-template #op>\n            <a class=\"ant-dropdown-link\" nz-dropdown [nzDropdownMenu]=\"opMenu\">\n              更多\n              <i nz-icon nzType=\"down\"></i>\n            </a>\n            <nz-dropdown-menu #opMenu=\"nzDropdownMenu\">\n              <ul nz-menu>\n                <li nz-menu-item (click)=\"openDetail(item.projectId)\">查看详情</li>\n                <li nz-menu-item *ngIf=\"item.progress == 1\" (click)=\"openEdit(item.projectId)\">编辑</li>\n                <li nz-menu-item *ngIf=\"item.progress == 1\" (click)=\"openApply(item.projectId)\">申请</li>\n              </ul>\n            </nz-dropdown-menu>\n          </ng-template>\n        </nz-list-item>\n      </ng-template>\n    </nz-list-item>\n  </ng-template>\n</nz-list>");
 
 /***/ }),
 
@@ -35,7 +35,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<page-header [title]=\"null\"></page-header>\n<nz-card [nzBordered]=\"false\">\n  <div nz-row>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"6\" class=\"header-info\">\n      <span class=\"text-grey-dark\">我的任务</span>\n      <span class=\"d-block display-2\">{{allOfSession}}个任务</span>\n      <em></em>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"6\" class=\"header-info\">\n      <span class=\"text-grey-dark\">新任务</span>\n      <span class=\"d-block display-2\">{{uncompleteOfSession}}个任务</span>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"6\" class=\"header-info\">\n      <span class=\"text-grey-dark\">已经完成</span>\n      <span class=\"d-block display-2\">{{completedOfSession}}个任务</span>\n      <em></em>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"6\" class=\"header-info\">\n      <span class=\"text-grey-dark\">正在进行</span>\n      <span class=\"d-block display-2\">{{completingOfSession}}个任务</span>\n      <em></em>\n    </div>\n  </div>\n</nz-card>\n\n<nz-list [nzDataSource]='data' [nzRenderItem]=\"item\" [nzLoading]=\"loading\">\n  <ng-template #item let-item>\n    <nz-list-item>\n      <nz-card [nzHoverable]=\"false\" [nzBordered]=\"false\" style='width: 100%' [nzTitle]=\"item.projectName\"\n        [nzExtra]=\"extraTemplate\">\n        <sv-container size=\"large\">\n          <sv label=\"产品经理\">{{item.manager}}</sv>\n          <sv label=\"项目合同额（万元）\">{{item.amount}}</sv>\n          <sv label=\"客户名称\">{{item.customerName}}</sv>\n          <sv label=\"合同编号\">{{item.customerName}}</sv>\n        </sv-container>\n        <nz-divider></nz-divider>\n        <config-app-progress [item]=\"item\"></config-app-progress>\n        <div class=\"steps-content\"></div>\n      </nz-card>\n      <ng-template #extraTemplate>\n        <nz-list-item [nzActions]=\"[edit, op]\">\n          <ng-template #edit>\n            <a (click)=\"openDetail(item.projectId)\">查看详情</a>\n          </ng-template>\n          <ng-template #op>\n            <a class=\"ant-dropdown-link\" nz-dropdown [nzDropdownMenu]=\"opMenu\">\n              更多\n              <i nz-icon nzType=\"down\"></i>\n            </a>\n            <nz-dropdown-menu #opMenu=\"nzDropdownMenu\">\n              <ul nz-menu>\n                <li nz-menu-item (click)=\"openDetail(item.projectId)\">查看详情</li>\n                <li nz-menu-item (click)=\"_submitForm(item.projectId)\">部署</li>\n              </ul>\n            </nz-dropdown-menu>\n          </ng-template>\n        </nz-list-item>\n      </ng-template>\n    </nz-list-item>\n  </ng-template>\n</nz-list>");
+/* harmony default export */ __webpack_exports__["default"] = ("<page-header [title]=\"null\"></page-header>\n<nz-card [nzBordered]=\"false\">\n  <div nz-row>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">我的产品</span>\n      <span class=\"d-block display-2\">8个产品</span>\n      <em></em>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">本周/月更新次数</span>\n      <span class=\"d-block display-2\">2/7</span>\n      <em></em>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">本周需求完成数量</span>\n      <span class=\"d-block display-2\">24个</span>\n    </div>\n  </div>\n</nz-card>\n\n<nz-list [nzDataSource]='data' [nzRenderItem]=\"item\" [nzLoading]=\"loading\">\n  <ng-template #item let-item>\n    <nz-list-item>\n      <nz-card [nzHoverable]=\"false\" [nzBordered]=\"false\" style='width: 100%' [nzTitle]=\"item.projectName\"\n        [nzExtra]=\"extraTemplate\">\n        <sv-container size=\"large\">\n          <sv label=\"产品经理\">{{item.manager}}</sv>\n          <sv label=\"项目合同额（万元）\">{{item.amount}}</sv>\n          <sv label=\"客户名称\">{{item.customerName}}</sv>\n          <sv label=\"合同编号\">{{item.customerName}}</sv>\n        </sv-container>\n        <nz-divider></nz-divider>\n        <config-app-progress [item]=\"item\"></config-app-progress>\n        <div class=\"steps-content\"></div>\n      </nz-card>\n      <ng-template #extraTemplate>\n        <nz-list-item [nzActions]=\"[edit, op]\">\n          <ng-template #edit>\n            <a (click)=\"openDetail(item.projectId)\">查看详情</a>\n          </ng-template>\n          <ng-template #op>\n            <a class=\"ant-dropdown-link\" nz-dropdown [nzDropdownMenu]=\"opMenu\">\n              更多\n              <i nz-icon nzType=\"down\"></i>\n            </a>\n            <nz-dropdown-menu #opMenu=\"nzDropdownMenu\">\n              <ul nz-menu>\n                <li nz-menu-item (click)=\"openDetail(item.projectId)\">查看详情</li>\n                <li nz-menu-item (click)=\"_submitForm(item.projectId)\">部署</li>\n              </ul>\n            </nz-dropdown-menu>\n          </ng-template>\n        </nz-list-item>\n      </ng-template>\n    </nz-list-item>\n  </ng-template>\n</nz-list>");
 
 /***/ }),
 
@@ -135,10 +135,6 @@ let ConfigProjectDetailComponent = class ConfigProjectDetailComponent {
         this.http = http;
         this.modal = modal;
         this.fb = fb;
-        // 被指定的部署人员的id
-        this.selectDeployerValue = null;
-        // 所有部署人员
-        this.allDeployers = null;
         this.projectId = -1;
         // 所有的产品集合，相同产品归为一类。用于选定产品
         this.ProdsWithVersionOptions = [];
@@ -161,11 +157,6 @@ let ConfigProjectDetailComponent = class ConfigProjectDetailComponent {
     getData() {
         this.http.get(_env_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].SERVER_URL + '/api/project/getProjectDetail', { projectId: this.projectId }).subscribe(res => {
             this.data = res.data;
-        });
-        // 获取部署人员
-        this.http.get(_env_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].SERVER_URL + '/api/userManager/getUserByRole', { role: 50000 }).subscribe(res => {
-            this.allDeployers = res.data;
-            console.log(res);
         });
     }
     _submitForm() {
@@ -220,26 +211,8 @@ let ConfigProjectDetailComponent = class ConfigProjectDetailComponent {
             }
         });
     }
-    /**
-     * 关闭本页面
-     */
     close() {
         this.modal.destroy();
-    }
-    /**
-     * 根据提交的部署人员信息，部署本模块
-     */
-    deploy() {
-        if (this.selectDeployerValue != null) {
-            const body = {
-                projectId: this.projectId,
-                deployerId: this.selectDeployerValue
-            };
-            this.http.put(_env_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].SERVER_URL + '/api/project/deploy', body).subscribe(res => {
-                console.log(res);
-            });
-        }
-        this.close();
     }
 };
 ConfigProjectDetailComponent.ctorParameters = () => [
@@ -1073,17 +1046,15 @@ let ConfigProjectListComponent = class ConfigProjectListComponent {
         this.http = http;
         this.modal = modal;
         this.cdr = cdr;
-        this.uncompleteOfSession = 0;
-        this.allSession = 0;
-        this.completeOfSession = 0;
-        this.serchKey = '';
-        this.scope = 'all';
+        this.q = {
+            q: '',
+            status: 'all',
+        };
         this.loading = false;
         this.data = [];
     }
     ngOnInit() {
         this.getData();
-        this.getSessionNumber();
     }
     openAdd() {
         this.modal.create(_project_add_project_add_component__WEBPACK_IMPORTED_MODULE_6__["ConfigProjectAddComponent"], {}, { size: 1200 }).subscribe((res) => {
@@ -1105,44 +1076,11 @@ let ConfigProjectListComponent = class ConfigProjectListComponent {
             this.getData();
         });
     }
-    openDeploy(projectId) {
-        this.modal.create(_project_detail_project_detail_component__WEBPACK_IMPORTED_MODULE_7__["ConfigProjectDetailComponent"], { projectId }, { size: 1200 }).subscribe((res) => {
-            this.cdr.detectChanges();
-        });
-    }
     getData() {
-        this.http.get(_env_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].SERVER_URL + '/api/project/getList', { pageNum: 0, pageSize: 5, key: this.serchKey, scope: this.scope }).subscribe((res) => {
+        this.http.get(_env_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].SERVER_URL + '/api/project/getList', { pageNum: 0, pageSize: 5 }).subscribe((res) => {
             this.data = res.data;
             this.loading = false;
             this.cdr.detectChanges();
-        });
-    }
-    /**
-     * 搜索，
-     */
-    search() {
-        this.getData();
-    }
-    /**
-     * 绑定搜索框快捷键
-     * @param e
-     */
-    searchChanged(e) {
-        const keycode = window.event ? e.keyCode : e.which;
-        if (keycode === 13) { // 回车
-            this.search();
-        }
-        if (keycode === 27) { // esc
-            this.serchKey = '';
-        }
-    }
-    getSessionNumber() {
-        this.http.get(_env_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].SERVER_URL + '/api/project/getSessionNumber').subscribe((res) => {
-            if (res.data != null) {
-                this.allSession = res.data.allSession;
-                this.completeOfSession = res.data.completeOfSession;
-                this.uncompleteOfSession = res.data.uncompleteOfSession;
-            }
         });
     }
 };
@@ -1185,7 +1123,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<nz-steps [nzCurrent]=\"item?.progress - 1\" nzProgressDot>\n  <nz-step [nzTitle]=\"'创建项目'\" [nzDescription]=\"createDesc\">\n    <ng-template #createDesc>\n      <div class=\"desc\">\n        <div class=\"my-sm\">\n          {{item?.ops[0].oper.realname}}\n          <i nz-icon nzType=\"dingding\" class=\"ml-sm\"></i>\n        </div>\n        <div>{{item?.ops[0].opTime | date:'yyyy-MM-dd'}}</div>\n      </div>\n    </ng-template>\n  </nz-step>\n  <nz-step [nzTitle]=\"'申请产品包'\" [nzDescription]=\"checkedDesc\">\n    <ng-template #checkedDesc>\n      <div class=\"desc\">\n        <div class=\"my-sm\" *ngIf='item?.progress > 2'>\n          {{item?.ops[1].oper.realname}}\n          <i nz-icon nzType=\"dingding\" class=\"ml-sm\" style=\"color: #00a0e9;\"></i>\n        </div>\n        <div *ngIf='item?.progress > 2'>{{item?.ops[1].opTime | date:'yyyy-MM-dd'}}</div>\n      </div>\n    </ng-template>\n  </nz-step>\n  <nz-step [nzTitle]=\"'校验产品包'\" [nzDescription]=\"verifyDesc\">\n    <ng-template #verifyDesc>\n      <div class=\"desc\">\n        <div class=\"my-sm\" *ngIf='item?.progress > 2'>\n          {{item?.ops[2].oper.realname}}\n          <i nz-icon nzType=\"dingding\" class=\"ml-sm\" style=\"color: #00a0e9;\"></i>\n        </div>\n        <div *ngIf='item?.progress > 3'>{{item?.ops[2].opTime | date:'yyyy-MM-dd'}}</div>\n      </div>\n    </ng-template>\n  </nz-step>\n  <nz-step [nzTitle]=\"'部署中'\" [nzDescription]=\"deployDesc\">\n    <ng-template #deployDesc>\n      <div class=\"desc\">\n        <div class=\"my-sm\" *ngIf='item?.progress > 3'>\n          {{item?.ops[3].oper.realname}}\n          <i nz-icon nzType=\"dingding\" class=\"ml-sm\" style=\"color: #00a0e9;\"></i>\n        </div>\n        <div *ngIf='item?.progress > 4'>{{item?.ops[3].opTime | date:'yyyy-MM-dd'}}</div>\n      </div>\n    </ng-template>\n  </nz-step>\n  <nz-step [nzTitle]=\"'完成'\" [nzDescription]=\"successDesc\">\n    <ng-template #successDesc>\n      <div class=\"desc\">\n        <div class=\"my-sm\" *ngIf='item?.progress > 4'>\n          {{item?.ops[4].oper.realname}}\n          <i nz-icon nzType=\"dingding\" class=\"ml-sm\" style=\"color: #00a0e9;\"></i>\n        </div>\n        <div *ngIf='item?.progress > 4'>{{item?.ops[4].opTime | date:'yyyy-MM-dd'}}</div>\n      </div>\n    </ng-template>\n  </nz-step>\n</nz-steps>");
+/* harmony default export */ __webpack_exports__["default"] = ("<nz-steps [nzCurrent]=\"item?.progress - 1\" nzProgressDot>\n  <nz-step [nzTitle]=\"'创建项目'\" [nzDescription]=\"createDesc\">\n    <ng-template #createDesc>\n      <div class=\"desc\">\n        <div class=\"my-sm\">\n          {{item?.ops[0].oper.realname}}\n          <i nz-icon nzType=\"dingding\" class=\"ml-sm\"></i>\n        </div>\n        <div>{{item?.ops[0].opTime | date:'yyyy-MM-dd'}}</div>\n      </div>\n    </ng-template>\n  </nz-step>\n  <nz-step [nzTitle]=\"'申请产品包'\" [nzDescription]=\"checkedDesc\">\n    <ng-template #checkedDesc>\n      <div class=\"desc\">\n        <div class=\"my-sm\" *ngIf='item?.progress > 2'>\n          {{item?.ops[1].oper.realname}}\n          <i nz-icon nzType=\"dingding\" class=\"ml-sm\" style=\"color: #00a0e9;\"></i>\n        </div>\n        <div *ngIf='item?.progress > 2'>{{item?.ops[1].opTime | date:'yyyy-MM-dd'}}</div>\n        <a *ngIf='item?.progress == 2'>催一下</a>\n      </div>\n    </ng-template>\n  </nz-step>\n  <nz-step [nzTitle]=\"'校验产品包'\" [nzDescription]=\"verifyDesc\">\n    <ng-template #verifyDesc>\n      <div class=\"desc\">\n        <div class=\"my-sm\" *ngIf='item?.progress > 2'>\n          {{item?.ops[2].oper.realname}}\n          <i nz-icon nzType=\"dingding\" class=\"ml-sm\" style=\"color: #00a0e9;\"></i>\n        </div>\n        <div *ngIf='item?.progress > 3'>{{item?.ops[2].opTime | date:'yyyy-MM-dd'}}</div>\n        <a *ngIf='item?.progress === 3'>催一下</a>\n      </div>\n    </ng-template>\n  </nz-step>\n  <nz-step [nzTitle]=\"'部署中'\" [nzDescription]=\"deployDesc\">\n    <ng-template #deployDesc>\n      <div class=\"desc\">\n        <div class=\"my-sm\" *ngIf='item?.progress > 3'>\n          {{item?.ops[3].oper.realname}}\n          <i nz-icon nzType=\"dingding\" class=\"ml-sm\" style=\"color: #00a0e9;\"></i>\n        </div>\n        <div *ngIf='item?.progress > 4'>{{item?.ops[3].opTime | date:'yyyy-MM-dd'}}</div>\n        <a *ngIf='item?.progress == 4'>催一下</a>\n      </div>\n    </ng-template>\n  </nz-step>\n  <nz-step [nzTitle]=\"'完成'\" [nzDescription]=\"successDesc\">\n    <ng-template #successDesc>\n      <div class=\"desc\">\n        <div class=\"my-sm\" *ngIf='item?.progress > 4'>\n          {{item?.ops[4].oper.realname}}\n          <i nz-icon nzType=\"dingding\" class=\"ml-sm\" style=\"color: #00a0e9;\"></i>\n        </div>\n        <div *ngIf='item?.progress > 4'>{{item?.ops[4].opTime | date:'yyyy-MM-dd'}}</div>\n        <a *ngIf='item?.progress === 5'>催一下</a>\n      </div>\n    </ng-template>\n  </nz-step>\n</nz-steps>");
 
 /***/ }),
 
@@ -1763,10 +1701,6 @@ let ConfigDeploymentListComponent = class ConfigDeploymentListComponent {
         this.http = http;
         this.modal = modal;
         this.cdr = cdr;
-        this.allOfSession = 0;
-        this.completedOfSession = 0;
-        this.completingOfSession = 0;
-        this.uncompleteOfSession = 0;
         this.q = {
             q: '',
             status: 'all',
@@ -1776,7 +1710,6 @@ let ConfigDeploymentListComponent = class ConfigDeploymentListComponent {
     }
     ngOnInit() {
         this.getData();
-        this.getSessioNumber();
     }
     openDetail(projectId) {
         this.modal.create(_deployment_detail_deployment_detail_component__WEBPACK_IMPORTED_MODULE_5__["ConfigDeploymentDetailComponent"], { projectId }, { size: 1200 }).subscribe((res) => {
@@ -1791,22 +1724,11 @@ let ConfigDeploymentListComponent = class ConfigDeploymentListComponent {
             this.cdr.detectChanges();
         });
     }
-    getSessioNumber() {
-        this.http.get('/api/deployment/sessionNumber').subscribe((res) => {
-            this.allOfSession = res.data.allOfSession;
-            this.completedOfSession = res.data.completedOfSession;
-            this.completingOfSession = res.data.completingOfSession;
-            this.uncompleteOfSession = res.data.uncompleteOfSession;
-        });
-    }
     /**
    * 提交本次 部署信息
    */
     _submitForm(projectId) {
-        const params = {
-            projectId: projectId
-        };
-        this.http.put(_env_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].SERVER_URL + '/api/deployment/edit?projectId=' + projectId).subscribe(res => {
+        this.http.put(_env_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].SERVER_URL + '/api/deployment/edit', { projectId: projectId }).subscribe(res => {
         });
     }
 };
@@ -1835,7 +1757,7 @@ ConfigDeploymentListComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__dec
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<page-header title=\"项目详情\">\n\n</page-header>\n<nz-card [nzBordered]=\"false\" nzTitle=\"基本信息\">\n  <nz-row nzGutter=\"16\">\n    <nz-col nzLg=\"6\" nzMd=\"12\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label nzFor=\"name\">项目名</nz-form-label>\n        <nz-form-control>\n          <span id=\"projectName\">{{data?.projectName}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n    <nz-col [nzXl]=\"{ span: 6, offset: 2 }\" [nzLg]=\"{ span: 8 }\" [nzMd]=\"{ span: 12 }\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label>项目合同额</nz-form-label>\n        <nz-form-control>\n          <span>{{data?.contractAmount}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n    <nz-col [nzXl]=\"{ span: 8, offset: 2 }\" [nzLg]=\"{ span: 10 }\" [nzMd]=\"{ span: 24 }\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label>项目经理</nz-form-label>\n        <nz-form-control>\n          <span>{{data?.projectManager}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n  </nz-row>\n  <nz-row nzGutter=\"16\">\n    <nz-col nzLg=\"6\" nzMd=\"12\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label>项目地址</nz-form-label>\n        <nz-form-control>\n          <span>{{data?.projectAddress}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n    <nz-col [nzXl]=\"{ span: 6, offset: 2 }\" [nzLg]=\"{ span: 8 }\" [nzMd]=\"{ span: 12 }\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label>客户名称</nz-form-label>\n        <nz-form-control>\n          <span>{{data?.customerName}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n    <nz-col [nzXl]=\"{ span: 8, offset: 2 }\" [nzLg]=\"{ span: 10 }\" [nzMd]=\"{ span: 24 }\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label>合同编号</nz-form-label>\n        <nz-form-control>\n          <span>{{data?.contractNumber}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n  </nz-row>\n  <config-app-progress [item]=\"data\"></config-app-progress>\n</nz-card>\n<nz-card [nzBordered]=\"false\" nzTitle=\"产品依赖\">\n  <nz-list nzBordered>\n    <nz-list-item *ngFor=\"let item of data?.beforeSelectedProduct\">\n      <span nz-typography>{{item.productName}} v {{item.prodVersion}}</span>\n    </nz-list-item>\n  </nz-list>\n</nz-card>\n<nz-card [nzBordered]=\"false\" nzTitle=\"附件信息\">\n  <nz-list nzBordered>\n    <nz-list-item *ngFor=\"let item of data?.assetsList\">\n      <a [href]=\"item.address\" nz-typography>{{item.assetsName}}</a>\n    </nz-list-item>\n  </nz-list>\n</nz-card>\n\n<nz-card [nzBordered]=\"false\" nzTitle=\"部署信息\" *ngIf=\"data?.progress > 2\" [nzExtra]=\"selectDeployer\">\n  <nz-list nzBordered>\n    <nz-list-item *ngFor=\"let item of data?.projectPackage\">\n      <a [href]=\"item.address\" nz-typography>{{item.assetsName}}</a>\n    </nz-list-item>\n  </nz-list>\n  <ng-template #selectDeployer>\n    <nz-select style=\"width: 200px;\" nzShowSearch nzAllowClear nzPlaceHolder=\"选择一名部署人员\"\n      [(ngModel)]=\"selectDeployerValue\">\n      <nz-option *ngFor=\"let item of allDeployers\" [nzLabel]=\"item.realname\" [nzValue]=\"item.id\"></nz-option>\n    </nz-select>\n  </ng-template>\n</nz-card>\n<div style=\"float: right;\">\n  <button nz-button [disabled]=\"selectDeployerValue == null || data?.progress ==4\" type=\"primary\" nzType=\"primary\"\n    (click)=\"deploy()\">提交</button>\n  <button nz-button type=\"primary\" nzType=\"primary\" (click)=\"close()\">关闭</button>\n</div>");
+/* harmony default export */ __webpack_exports__["default"] = ("<page-header title=\"项目详情\">\n\n</page-header>\n<nz-card [nzBordered]=\"false\" nzTitle=\"基本信息\">\n  <nz-row nzGutter=\"16\">\n    <nz-col nzLg=\"6\" nzMd=\"12\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label nzFor=\"name\">项目名</nz-form-label>\n        <nz-form-control>\n          <span id=\"projectName\">{{data?.projectName}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n    <nz-col [nzXl]=\"{ span: 6, offset: 2 }\" [nzLg]=\"{ span: 8 }\" [nzMd]=\"{ span: 12 }\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label>项目合同额</nz-form-label>\n        <nz-form-control>\n          <span>{{data?.contractAmount}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n    <nz-col [nzXl]=\"{ span: 8, offset: 2 }\" [nzLg]=\"{ span: 10 }\" [nzMd]=\"{ span: 24 }\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label>项目经理</nz-form-label>\n        <nz-form-control>\n          <span>{{data?.projectManager}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n  </nz-row>\n  <nz-row nzGutter=\"16\">\n    <nz-col nzLg=\"6\" nzMd=\"12\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label>项目地址</nz-form-label>\n        <nz-form-control>\n          <span>{{data?.projectAddress}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n    <nz-col [nzXl]=\"{ span: 6, offset: 2 }\" [nzLg]=\"{ span: 8 }\" [nzMd]=\"{ span: 12 }\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label>客户名称</nz-form-label>\n        <nz-form-control>\n          <span>{{data?.customerName}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n    <nz-col [nzXl]=\"{ span: 8, offset: 2 }\" [nzLg]=\"{ span: 10 }\" [nzMd]=\"{ span: 24 }\" nzSm=\"24\">\n      <nz-form-item>\n        <nz-form-label>合同编号</nz-form-label>\n        <nz-form-control>\n          <span>{{data?.contractNumber}}</span>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-col>\n  </nz-row>\n  <config-app-progress [item]=\"data\"></config-app-progress>\n</nz-card>\n<nz-card [nzBordered]=\"false\" nzTitle=\"产品依赖\">\n  <nz-list nzBordered>\n    <nz-list-item *ngFor=\"let item of data?.beforeSelectedProduct\">\n      <span nz-typography>{{item.productName}} v {{item.prodVersion}}</span>\n    </nz-list-item>\n  </nz-list>\n</nz-card>\n<nz-card [nzBordered]=\"false\" nzTitle=\"附件信息\">\n  <nz-list nzBordered>\n    <nz-list-item *ngFor=\"let item of data?.assetsList\">\n      <a [href]=\"item.address\" nz-typography>{{item.assetsName}}</a>\n    </nz-list-item>\n  </nz-list>\n</nz-card>\n<nz-card [nzBordered]=\"false\" nzTitle=\"部署包\" *ngIf=\"data?.progress > 4\">\n  <nz-list nzBordered>\n    <nz-list-item *ngFor=\"let item of data?.projectPackage\">\n      <a [href]=\"item.address\" nz-typography>{{item.assetsName}}</a>\n    </nz-list-item>\n  </nz-list>\n</nz-card>\n<div style=\"float: right;\">\n  <button nz-button type=\"primary\" nzType=\"primary\" (click)=\"close()\">关闭</button>\n</div>");
 
 /***/ }),
 
@@ -2324,7 +2246,7 @@ ConfigVerifyDetailComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decor
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<page-header [title]=\"null\"></page-header>\n<nz-card [nzBordered]=\"false\">\n  <div nz-row>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">我的任务</span>\n      <span class=\"d-block display-2\">{{data.length}}个产品</span>\n      <em></em>\n    </div>\n  </div>\n</nz-card>\n\n<nz-card [nzHoverable]=\"false\" [nzBordered]=\"false\">\n  <div class=\"d-flex align-items-center mb-lg\">\n    <h3 class=\"flex-1 text-lg\">产品列表</h3>\n    <div>\n      <nz-radio-group [(ngModel)]=\"q.status\" class=\"mr-md\">\n        <label nz-radio-button [nzValue]=\"'all'\">\n          <span>全部</span>\n        </label>\n        <label nz-radio-button [nzValue]=\"'progress'\">\n          <span>仅看自己</span>\n        </label>\n      </nz-radio-group>\n      <nz-input-group nzSuffixIcon=\"search\" style=\"width: 270px;\">\n        <input type=\"text\" nz-input placeholder=\"请输入\" [(ngModel)]=\"q.q\" name=\"q\" />\n      </nz-input-group>\n    </div>\n  </div>\n</nz-card>\n\n<nz-list [nzDataSource]='data' [nzRenderItem]=\"item\" [nzLoading]=\"loading\">\n  <ng-template #item let-item>\n    <nz-list-item>\n      <nz-card [nzHoverable]=\"false\" [nzBordered]=\"false\" style='width: 100%' [nzTitle]=\"item.projectName\"\n        [nzExtra]=\"extraTemplate\">\n        <sv-container size=\"large\">\n          <sv label=\"产品经理\">{{item.manager}}</sv>\n          <sv label=\"项目合同额（万元）\">{{item.amount}}</sv>\n          <sv label=\"客户名称\">{{item.customerName}}</sv>\n          <sv label=\"合同编号\">{{item.customerName}}</sv>\n        </sv-container>\n        <nz-divider></nz-divider>\n        <config-app-progress [item]=\"item\"></config-app-progress>\n        <div class=\"steps-content\"></div>\n      </nz-card>\n      <ng-template #extraTemplate>\n        <nz-list-item [nzActions]=\"[edit, op]\">\n          <ng-template #edit>\n            <a (click)=\"openDetail(item.projectId)\">查看详情</a>\n          </ng-template>\n          <ng-template #op>\n            <a class=\"ant-dropdown-link\" nz-dropdown [nzDropdownMenu]=\"opMenu\">\n              更多\n              <i nz-icon nzType=\"down\"></i>\n            </a>\n            <nz-dropdown-menu #opMenu=\"nzDropdownMenu\">\n              <ul nz-menu>\n                <li nz-menu-item (click)=\"openDetail(item.projectId)\">查看详情</li>\n              </ul>\n            </nz-dropdown-menu>\n          </ng-template>\n        </nz-list-item>\n      </ng-template>\n    </nz-list-item>\n  </ng-template>\n</nz-list>");
+/* harmony default export */ __webpack_exports__["default"] = ("<page-header [title]=\"null\"></page-header>\n<nz-card [nzBordered]=\"false\">\n  <div nz-row>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">我的产品</span>\n      <span class=\"d-block display-2\">8个产品</span>\n      <em></em>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">本周/月更新次数</span>\n      <span class=\"d-block display-2\">2/7</span>\n      <em></em>\n    </div>\n    <div nz-col [nzXs]=\"24\" [nzSm]=\"8\" class=\"header-info\">\n      <span class=\"text-grey-dark\">本周需求完成数量</span>\n      <span class=\"d-block display-2\">24个</span>\n    </div>\n  </div>\n</nz-card>\n\n<nz-card [nzHoverable]=\"false\" [nzBordered]=\"false\">\n  <div class=\"d-flex align-items-center mb-lg\">\n    <h3 class=\"flex-1 text-lg\">产品列表</h3>\n    <div>\n      <nz-radio-group [(ngModel)]=\"q.status\" class=\"mr-md\">\n        <label nz-radio-button [nzValue]=\"'all'\">\n          <span>全部</span>\n        </label>\n        <label nz-radio-button [nzValue]=\"'progress'\">\n          <span>仅看自己</span>\n        </label>\n      </nz-radio-group>\n      <nz-input-group nzSuffixIcon=\"search\" style=\"width: 270px;\">\n        <input type=\"text\" nz-input placeholder=\"请输入\" [(ngModel)]=\"q.q\" name=\"q\" />\n      </nz-input-group>\n    </div>\n  </div>\n</nz-card>\n\n<nz-list [nzDataSource]='data' [nzRenderItem]=\"item\" [nzLoading]=\"loading\">\n  <ng-template #item let-item>\n    <nz-list-item>\n      <nz-card [nzHoverable]=\"false\" [nzBordered]=\"false\" style='width: 100%' [nzTitle]=\"item.projectName\"\n        [nzExtra]=\"extraTemplate\">\n        <sv-container size=\"large\">\n          <sv label=\"产品经理\">{{item.manager}}</sv>\n          <sv label=\"项目合同额（万元）\">{{item.amount}}</sv>\n          <sv label=\"客户名称\">{{item.customerName}}</sv>\n          <sv label=\"合同编号\">{{item.customerName}}</sv>\n        </sv-container>\n        <nz-divider></nz-divider>\n        <config-app-progress [item]=\"item\"></config-app-progress>\n        <div class=\"steps-content\"></div>\n      </nz-card>\n      <ng-template #extraTemplate>\n        <nz-list-item [nzActions]=\"[edit, op]\">\n          <ng-template #edit>\n            <a (click)=\"openDetail(item.projectId)\">查看详情</a>\n          </ng-template>\n          <ng-template #op>\n            <a class=\"ant-dropdown-link\" nz-dropdown [nzDropdownMenu]=\"opMenu\">\n              更多\n              <i nz-icon nzType=\"down\"></i>\n            </a>\n            <nz-dropdown-menu #opMenu=\"nzDropdownMenu\">\n              <ul nz-menu>\n                <li nz-menu-item (click)=\"openDetail()\">查看详情</li>\n              </ul>\n            </nz-dropdown-menu>\n          </ng-template>\n        </nz-list-item>\n      </ng-template>\n    </nz-list-item>\n  </ng-template>\n</nz-list>");
 
 /***/ }),
 
@@ -3164,7 +3086,7 @@ let ConfigProjectAddComponent = class ConfigProjectAddComponent {
             assetsList: this.assets
         };
         this.http.post(_env_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].SERVER_URL + '/api/project/addProject', param).subscribe(res => {
-            this.close();
+            // this.close();
         });
     }
     selectProd(values) {

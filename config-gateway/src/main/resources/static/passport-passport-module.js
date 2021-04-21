@@ -452,8 +452,8 @@ let UserLoginComponent = class UserLoginComponent {
         // #region get captcha
         this.count = 0;
         this.form = fb.group({
-            userName: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required]],
-            password: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required]],
+            userName: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].pattern(/^(admin|user)$/)]],
+            password: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].pattern(/^(ng\-alain\.com)$/)]],
             mobile: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].pattern(/^1\d{10}$/)]],
             captcha: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required]],
             remember: [true],
@@ -492,84 +492,50 @@ let UserLoginComponent = class UserLoginComponent {
     }
     // #endregion
     submit() {
-        // this.error = '';
-        // if (this.type === 0) {
-        //   this.userName.markAsDirty();
-        //   this.userName.updateValueAndValidity();
-        //   this.password.markAsDirty();
-        //   this.password.updateValueAndValidity();
-        //   if (this.userName.invalid || this.password.invalid) {
-        //     return;
-        //   }
-        // } else {
-        //   this.mobile.markAsDirty();
-        //   this.mobile.updateValueAndValidity();
-        //   this.captcha.markAsDirty();
-        //   this.captcha.updateValueAndValidity();
-        //   if (this.mobile.invalid || this.captcha.invalid) {
-        //     return;
-        //   }
-        // }
-        // // 默认配置中对所有HTTP请求都会强制 [校验](https://ng-alain.com/auth/getting-started) 用户 Token
-        // // 然一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
-        // this.http
-        //   .post('/login/account?_allow_anonymous=true', {
-        //     type: this.type,
-        //     userName: this.userName.value,
-        //     password: this.password.value,
-        //   })
-        //   .subscribe((res) => {
-        //     if (res.msg !== 'ok') {
-        //       this.error = res.msg;
-        //       return;
-        //     }
-        //     // 清空路由复用信息
-        //     this.reuseTabService.clear();
-        //     // 设置用户Token信息
-        //     // TODO: Mock expired value
-        //     res.user.expired = +new Date() + 1000 * 60 * 5;
-        //     this.tokenService.set(res.user);
-        //     // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
-        //     this.startupSrv.load().then(() => {
-        //       let url = this.tokenService.referrer!.url || '/';
-        //       if (url.includes('/passport')) {
-        //         url = '/';
-        //       }
-        //       this.router.navigateByUrl(url);
-        //     });
-        //   });
-        /**
-         * email: "admin@qq.com"
-            expired: 1618294243014
-            id: 10000
-            name: "admin"
-            time: 1618293942711
-            token: "123456789"
-         */
-        this.http.get(_env_environment__WEBPACK_IMPORTED_MODULE_10__["environment"].SERVER_URL + '/api/auth/password?_allow_anonymous=true', {
-            username: this.userName.value,
-            password: this.password.value
-        }).subscribe(res => {
-            const token = res.data.token;
-            const _token = {
-                email: "admin@qq.com",
-                expired: +new Date() + 1000 * 60 * 5,
-                id: 10000,
-                name: this.userName.value,
-                time: +new Date(),
-                token: token,
-            };
-            localStorage.setItem("_token", JSON.stringify(_token));
-            localStorage.setItem("username", this.userName.value);
-            localStorage.setItem("token", token);
-            console.log(111);
-            this.http.get(_env_environment__WEBPACK_IMPORTED_MODULE_10__["environment"].SERVER_URL + '/api/userManager/getRoleByUserName', { username: this.userName.value }).subscribe(res => {
-                localStorage.setItem("roles", res.data);
-            });
+        this.error = '';
+        if (this.type === 0) {
+            this.userName.markAsDirty();
+            this.userName.updateValueAndValidity();
+            this.password.markAsDirty();
+            this.password.updateValueAndValidity();
+            if (this.userName.invalid || this.password.invalid) {
+                return;
+            }
+        }
+        else {
+            this.mobile.markAsDirty();
+            this.mobile.updateValueAndValidity();
+            this.captcha.markAsDirty();
+            this.captcha.updateValueAndValidity();
+            if (this.mobile.invalid || this.captcha.invalid) {
+                return;
+            }
+        }
+        // 默认配置中对所有HTTP请求都会强制 [校验](https://ng-alain.com/auth/getting-started) 用户 Token
+        // 然一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
+        this.http
+            .post('/login/account?_allow_anonymous=true', {
+            type: this.type,
+            userName: this.userName.value,
+            password: this.password.value,
+        })
+            .subscribe((res) => {
+            if (res.msg !== 'ok') {
+                this.error = res.msg;
+                return;
+            }
             // 清空路由复用信息
             this.reuseTabService.clear();
+            // 设置用户Token信息
+            // TODO: Mock expired value
+            res.user.expired = +new Date() + 1000 * 60 * 5;
+            this.tokenService.set(res.user);
+            // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
             this.startupSrv.load().then(() => {
-                let url = '/config/project-list';
+                let url = this.tokenService.referrer.url || '/';
+                if (url.includes('/passport')) {
+                    url = '/';
+                }
                 this.router.navigateByUrl(url);
             });
         });

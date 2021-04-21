@@ -198,7 +198,7 @@ LayoutPassportComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/miaoyimin/ideaProject/my-project/src/main.ts */"zUnb");
+module.exports = __webpack_require__(/*! /root/my-project/src/main.ts */"zUnb");
 
 
 /***/ }),
@@ -392,7 +392,7 @@ const RULES = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n  <header-i18n showLangText=\"false\" class=\"langs\"></header-i18n>\n  <div class=\"wrap\">\n    <div class=\"top\">\n      <div class=\"head\">\n        <img class=\"logo\" src=\"./assets/logo-color.svg\" />\n        <span class=\"title\">ng-alain</span>\n      </div>\n      <div class=\"desc\">武林中最有影响力的《葵花宝典》；欲练神功，挥刀自宫</div>\n    </div>\n    <router-outlet></router-outlet>\n    <global-footer [links]=\"links\">\n      Copyright\n      <i nz-icon nzType=\"copyright\"></i> 2017 <a href=\"//github.com/cipchk\" target=\"_blank\">卡色</a>出品\n    </global-footer>\n  </div>\n</div>\n<theme-btn></theme-btn>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n  <header-i18n showLangText=\"false\" class=\"langs\"></header-i18n>\n  <div class=\"wrap\">\n    <div class=\"top\">\n      <div class=\"head\">\n        <img class=\"logo\" src=\"assets/logo-color.svg\" />\n        <span class=\"title\">ng-alain</span>\n      </div>\n      <div class=\"desc\">武林中最有影响力的《葵花宝典》；欲练神功，挥刀自宫</div>\n    </div>\n    <router-outlet></router-outlet>\n    <global-footer [links]=\"links\">\n      Copyright\n      <i nz-icon nzType=\"copyright\"></i> 2017 <a href=\"//github.com/cipchk\" target=\"_blank\">卡色</a>出品\n    </global-footer>\n  </div>\n</div>\n<theme-btn></theme-btn>\n");
 
 /***/ }),
 
@@ -647,8 +647,53 @@ LayoutBasicComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])(
         selector: 'layout-basic',
         template: `
     <layout-default [options]="options" [asideUser]="asideUserTpl" [content]="contentTpl">
+      <layout-default-header-item direction="left">
+        <a layout-default-header-item-trigger href="//github.com/ng-alain/ng-alain" target="_blank">
+          <i nz-icon nzType="github"></i>
+        </a>
+      </layout-default-header-item>
+      <layout-default-header-item direction="left" hidden="mobile">
+        <a layout-default-header-item-trigger routerLink="/passport/lock">
+          <i nz-icon nzType="lock"></i>
+        </a>
+      </layout-default-header-item>
+      <layout-default-header-item direction="left" hidden="pc">
+        <div layout-default-header-item-trigger (click)="searchToggleStatus = !searchToggleStatus">
+          <i nz-icon nzType="search"></i>
+        </div>
+      </layout-default-header-item>
+      <layout-default-header-item direction="middle">
+        <header-search class="alain-default__search" [toggleChange]="searchToggleStatus"></header-search>
+      </layout-default-header-item>
+      <layout-default-header-item direction="right">
+        <header-notify></header-notify>
+      </layout-default-header-item>
       <layout-default-header-item direction="right" hidden="mobile">
         <header-task></header-task>
+      </layout-default-header-item>
+      <layout-default-header-item direction="right" hidden="mobile">
+        <header-icon></header-icon>
+      </layout-default-header-item>
+      <layout-default-header-item direction="right" hidden="mobile">
+        <div layout-default-header-item-trigger nz-dropdown [nzDropdownMenu]="settingsMenu" nzTrigger="click" nzPlacement="bottomRight">
+          <i nz-icon nzType="setting"></i>
+        </div>
+        <nz-dropdown-menu #settingsMenu="nzDropdownMenu">
+          <div nz-menu style="width: 200px;">
+            <div nz-menu-item>
+              <header-rtl></header-rtl>
+            </div>
+            <div nz-menu-item>
+              <header-fullscreen></header-fullscreen>
+            </div>
+            <div nz-menu-item>
+              <header-clear-storage></header-clear-storage>
+            </div>
+            <div nz-menu-item>
+              <header-i18n></header-i18n>
+            </div>
+          </div>
+        </nz-dropdown-menu>
       </layout-default-header-item>
       <layout-default-header-item direction="right">
         <header-user></header-user>
@@ -672,6 +717,7 @@ LayoutBasicComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])(
         <router-outlet></router-outlet>
       </ng-template>
     </layout-default>
+
     <setting-drawer *ngIf="showSettingDrawer"></setting-drawer>
     <theme-btn></theme-btn>
   `,
@@ -2708,10 +2754,8 @@ let DefaultInterceptor = class DefaultInterceptor {
         if (!url.startsWith('https://') && !url.startsWith('http://') && !url.startsWith('assets')) {
             url = _env_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].SERVER_URL + url;
         }
-        let username = localStorage.getItem("username");
-        let token = localStorage.getItem("token");
         const newReq = req.clone({
-            headers: req.headers.set('username', JSON.stringify(username)).set('token', JSON.stringify(token)),
+            headers: req.headers.set('username', 'admin').set('token', 'a027f4d9-0200-4933-97f9-6a832e91f8b7'),
             url,
         });
         return next.handle(newReq).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_9__["mergeMap"])((ev) => {
@@ -3188,7 +3232,6 @@ AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
             ...FORM_MODULES,
         ],
         providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES],
-        // providers: [...LANG_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_18__["AppComponent"]],
     })
 ], AppModule);
