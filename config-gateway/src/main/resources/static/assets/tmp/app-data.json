@@ -1,0 +1,45 @@
+{
+  "app": {
+    "name": "Alain",
+    "description": "Ng-zorro admin panel front-end framework"
+  },
+  "user": {
+    "name": "Admin",
+    "avatar": "./assets/tmp/img/avatar.jpg",
+    "email": "getidea98@163.com"
+  },
+  "menu": [
+    {
+      "text": "Pro",
+      "i18n": "menu.pro",
+      "group": true,
+      "hideInBreadcrumb": true,
+      "children": [
+        {
+          "text": "Project List",
+          "i18n": "config.project-list",  
+          "link": "/config/project-list",
+          "icon": "anticon-appstore"
+        },
+        {
+          "text": "Product List",
+          "i18n": "config.product-list",  
+          "link": "/config/product-list",
+          "icon": "anticon-appstore"
+        },
+        {
+          "text": "Verify List",
+          "i18n": "config.verify-list",  
+          "link": "/config/verify-list",
+          "icon": "anticon-appstore"
+        },
+        {
+          "text": "Deployment List",
+          "i18n": "config.deployment-list",  
+          "link": "/config/deployment-list",
+          "icon": "anticon-appstore"
+        }
+      ]
+    }
+  ]
+}

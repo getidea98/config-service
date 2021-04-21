@@ -1,5 +1,6 @@
 package top.getidea.config.common.entity.userManager;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,6 +28,7 @@ public class Role implements Serializable {
      *
      * @mbg.generated Thu Jan 28 12:42:30 CST 2021
      */
+    @TableField("rolename")
     private String rolename;
 
     /**
@@ -34,6 +36,7 @@ public class Role implements Serializable {
      *
      * @mbg.generated Thu Jan 28 12:42:30 CST 2021
      */
+    @TableField("defaultLink")
     private String defaultLink;
 
     /**
@@ -42,6 +45,7 @@ public class Role implements Serializable {
      * @mbg.generated Thu Jan 28 12:42:30 CST 2021
      */
     @JsonIgnore
+    @TableField("status")
     private String status;
 
     /**
@@ -49,6 +53,7 @@ public class Role implements Serializable {
      *
      * @mbg.generated Thu Jan 28 12:42:30 CST 2021
      */
+    @TableField("description")
     private String description;
 
     /**

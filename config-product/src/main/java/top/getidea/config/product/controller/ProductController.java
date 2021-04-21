@@ -18,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/product")
 @Slf4j
+@CrossOrigin
 public class ProductController {
 
     @Resource(name = "productService")
@@ -39,7 +40,7 @@ public class ProductController {
      * @return
      */
     @PutMapping("/updateProduct")
-    public Result updateProduct(@RequestBody ProductMetaDTO productMetaDTO) {
+    public Result updateProduct(@RequestBody ProductMetaDTO productMetaDTO,@RequestHeader String username, @RequestHeader String token) {
         return productService.updateProduct(productMetaDTO.getProductMeta(), productMetaDTO.getProduct());
     }
 

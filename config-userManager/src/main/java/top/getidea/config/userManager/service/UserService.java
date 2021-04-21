@@ -20,5 +20,5 @@ public interface UserService {
 
     Result<List<User>> getAllUser(Integer role);
 
-    Result<List<User>> login(Integer username, String password);
+    Result login(Integer username, String password);
 }

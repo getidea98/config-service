@@ -44,8 +44,8 @@ public class UserController {
         return userService.getAllUser(role);
     }
 
-    @PostMapping("/login")
-    public Result<List<User>> login(@RequestParam("userName") Integer username,@RequestParam("password") String password) {
+    @GetMapping("/login")
+    public Result login(@RequestParam("userName") Integer username,@RequestParam("password") String password) {
         return userService.login(username,password);
     }
 }

@@ -27,4 +27,9 @@ public class RoleController {
     public Result<List<Role>> getRoleByUserId(@RequestParam("userId") Integer userId){
         return roleService.getRoleByUserId(userId);
     }
+
+    @GetMapping("/getRoleByUserName")
+    public Result<List<Role>> getRoleByUserName(@RequestParam("username") String username){
+        return roleService.getRoleByUserName(username);
+    }
 }

@@ -306,7 +306,10 @@ public class ProjectServiceImpl implements ProjectService {
         project.setProgress(4);
         projectMapper.updateById(project);
         ConfigProjectOperateLog configProjectOperateLog = new ConfigProjectOperateLog();
-        configProjectOperateLog.setOperater(userFeign.getUserByUsernameParam(username).getData().getId());
+        User data = userFeign.getUserByUsernameParam(username).getData();
+        if (data != null) {
+            configProjectOperateLog.setOperater(data.getId());
+        }
         configProjectOperateLog.setProjectId(projectId);
         configProjectOperateLog.setProgress(4);
         configProjectOperateLog.setCreateTime(new Date());

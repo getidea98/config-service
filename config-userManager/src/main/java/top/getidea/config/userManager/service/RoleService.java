@@ -24,4 +24,5 @@ public interface RoleService {
      */
     Result<List<Role>> getRoleByUserId(Integer userId);
 
+    Result<List<Role>> getRoleByUserName(String username);
 }
