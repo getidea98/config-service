@@ -198,7 +198,7 @@ LayoutPassportComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /root/my-project/src/main.ts */"zUnb");
+module.exports = __webpack_require__(/*! /Users/miaoyimin/ideaProject/my-project/src/main.ts */"zUnb");
 
 
 /***/ }),
@@ -392,7 +392,7 @@ const RULES = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n  <header-i18n showLangText=\"false\" class=\"langs\"></header-i18n>\n  <div class=\"wrap\">\n    <div class=\"top\">\n      <div class=\"head\">\n        <img class=\"logo\" src=\"assets/logo-color.svg\" />\n        <span class=\"title\">ng-alain</span>\n      </div>\n      <div class=\"desc\">武林中最有影响力的《葵花宝典》；欲练神功，挥刀自宫</div>\n    </div>\n    <router-outlet></router-outlet>\n    <global-footer [links]=\"links\">\n      Copyright\n      <i nz-icon nzType=\"copyright\"></i> 2017 <a href=\"//github.com/cipchk\" target=\"_blank\">卡色</a>出品\n    </global-footer>\n  </div>\n</div>\n<theme-btn></theme-btn>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n  <header-i18n showLangText=\"false\" class=\"langs\"></header-i18n>\n  <div class=\"wrap\">\n    <div class=\"top\">\n      <div class=\"head\">\n        <img class=\"logo\" src=\"./assets/logo-color.svg\" />\n        <span class=\"title\">ng-alain</span>\n      </div>\n      <div class=\"desc\">武林中最有影响力的《葵花宝典》；欲练神功，挥刀自宫</div>\n    </div>\n    <router-outlet></router-outlet>\n    <global-footer [links]=\"links\">\n      Copyright\n      <i nz-icon nzType=\"copyright\"></i> 2017 <a href=\"//github.com/cipchk\" target=\"_blank\">卡色</a>出品\n    </global-footer>\n  </div>\n</div>\n<theme-btn></theme-btn>\n");
 
 /***/ }),
 
@@ -429,6 +429,7 @@ __webpack_require__.r(__webpack_exports__);
 // The list of file replacements can be found in `angular.json`.
 const environment = {
     SERVER_URL: `http://tx.getidea.top:8888`,
+    // SERVER_URL: `http://127.0.0.1:8888`,
     production: false,
     useHash: true,
 };
@@ -647,53 +648,8 @@ LayoutBasicComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])(
         selector: 'layout-basic',
         template: `
     <layout-default [options]="options" [asideUser]="asideUserTpl" [content]="contentTpl">
-      <layout-default-header-item direction="left">
-        <a layout-default-header-item-trigger href="//github.com/ng-alain/ng-alain" target="_blank">
-          <i nz-icon nzType="github"></i>
-        </a>
-      </layout-default-header-item>
-      <layout-default-header-item direction="left" hidden="mobile">
-        <a layout-default-header-item-trigger routerLink="/passport/lock">
-          <i nz-icon nzType="lock"></i>
-        </a>
-      </layout-default-header-item>
-      <layout-default-header-item direction="left" hidden="pc">
-        <div layout-default-header-item-trigger (click)="searchToggleStatus = !searchToggleStatus">
-          <i nz-icon nzType="search"></i>
-        </div>
-      </layout-default-header-item>
-      <layout-default-header-item direction="middle">
-        <header-search class="alain-default__search" [toggleChange]="searchToggleStatus"></header-search>
-      </layout-default-header-item>
-      <layout-default-header-item direction="right">
-        <header-notify></header-notify>
-      </layout-default-header-item>
       <layout-default-header-item direction="right" hidden="mobile">
         <header-task></header-task>
-      </layout-default-header-item>
-      <layout-default-header-item direction="right" hidden="mobile">
-        <header-icon></header-icon>
-      </layout-default-header-item>
-      <layout-default-header-item direction="right" hidden="mobile">
-        <div layout-default-header-item-trigger nz-dropdown [nzDropdownMenu]="settingsMenu" nzTrigger="click" nzPlacement="bottomRight">
-          <i nz-icon nzType="setting"></i>
-        </div>
-        <nz-dropdown-menu #settingsMenu="nzDropdownMenu">
-          <div nz-menu style="width: 200px;">
-            <div nz-menu-item>
-              <header-rtl></header-rtl>
-            </div>
-            <div nz-menu-item>
-              <header-fullscreen></header-fullscreen>
-            </div>
-            <div nz-menu-item>
-              <header-clear-storage></header-clear-storage>
-            </div>
-            <div nz-menu-item>
-              <header-i18n></header-i18n>
-            </div>
-          </div>
-        </nz-dropdown-menu>
       </layout-default-header-item>
       <layout-default-header-item direction="right">
         <header-user></header-user>
@@ -717,7 +673,6 @@ LayoutBasicComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])(
         <router-outlet></router-outlet>
       </ng-template>
     </layout-default>
-
     <setting-drawer *ngIf="showSettingDrawer"></setting-drawer>
     <theme-btn></theme-btn>
   `,
@@ -2297,8 +2252,7 @@ let StartupService = class StartupService {
         iconSrv.addIcon(..._style_icons_auto__WEBPACK_IMPORTED_MODULE_10__["ICONS_AUTO"], ..._style_icons__WEBPACK_IMPORTED_MODULE_9__["ICONS"]);
     }
     load() {
-        // only works with promises
-        // https://github.com/angular/angular/issues/15088
+        let username = localStorage.getItem("username");
         return new Promise((resolve) => {
             Object(rxjs__WEBPACK_IMPORTED_MODULE_7__["zip"])(this.httpClient.get(`assets/tmp/i18n/${this.i18n.defaultLang}.json`), this.httpClient.get('assets/tmp/app-data.json'))
                 .pipe(
@@ -2754,8 +2708,10 @@ let DefaultInterceptor = class DefaultInterceptor {
         if (!url.startsWith('https://') && !url.startsWith('http://') && !url.startsWith('assets')) {
             url = _env_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].SERVER_URL + url;
         }
+        let username = localStorage.getItem("username");
+        let token = localStorage.getItem("token");
         const newReq = req.clone({
-            headers: req.headers.set('username', 'admin').set('token', 'a027f4d9-0200-4933-97f9-6a832e91f8b7'),
+            headers: req.headers.set('username', JSON.stringify(username)).set('token', JSON.stringify(token)),
             url,
         });
         return next.handle(newReq).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_9__["mergeMap"])((ev) => {
@@ -2984,6 +2940,58 @@ function yuan(value, digits = 2) {
 
 /***/ }),
 
+/***/ "Y4hG":
+/*!*********************************************!*\
+  !*** ./src/app/core/net/new.interceptor.ts ***!
+  \*********************************************/
+/*! exports provided: NewInterceptor */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewInterceptor", function() { return NewInterceptor; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
+
+
+const CODEMESSAGE = {
+    200: '服务器成功返回请求的数据。',
+    201: '新建或修改数据成功。',
+    202: '一个请求已经进入后台排队（异步任务）。',
+    204: '删除数据成功。',
+    400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
+    401: '用户没有权限（令牌、用户名、密码错误）。',
+    403: '用户得到授权，但是访问是被禁止的。',
+    404: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
+    406: '请求的格式不可得。',
+    410: '请求的资源被永久删除，且不会再得到的。',
+    422: '当创建一个对象时，发生一个验证错误。',
+    500: '服务器发生错误，请检查服务器。',
+    502: '网关错误。',
+    503: '服务不可用，服务器暂时过载或维护。',
+    504: '网关超时。',
+};
+/**
+ * 默认HTTP拦截器，其注册细节见 `app.module.ts`
+ */
+let NewInterceptor = class NewInterceptor {
+    intercept(req, next) {
+        let username = localStorage.getItem("username");
+        let token = localStorage.getItem("token");
+        const newReq = req.clone({
+            headers: req.headers.set('username', JSON.stringify(username)).set('token', JSON.stringify(token))
+        });
+        return next.handle(newReq);
+    }
+};
+NewInterceptor = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+], NewInterceptor);
+
+
+
+/***/ }),
+
 /***/ "Yxbd":
 /*!********************************************************!*\
   !*** ./src/app/layout/basic/widgets/icon.component.ts ***!
@@ -3116,6 +3124,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_st_widget_st_widget_module__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./shared/st-widget/st-widget.module */ "3QV4");
 /* harmony import */ var ng_zorro_antd_icon__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ng-zorro-antd/icon */ "FwiY");
 /* harmony import */ var _ant_design_icons_angular_icons__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @ant-design/icons-angular/icons */ "kVq8");
+/* harmony import */ var _core_net_new_interceptor__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./core/net/new.interceptor */ "Y4hG");
 
 // tslint:disable: no-duplicate-imports
 
@@ -3178,10 +3187,10 @@ const FORM_MODULES = [_shared__WEBPACK_IMPORTED_MODULE_16__["JsonSchemaModule"]]
 // #region Http Interceptors
 
 
-
 const INTERCEPTOR_PROVIDES = [
     { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HTTP_INTERCEPTORS"], useClass: _delon_auth__WEBPACK_IMPORTED_MODULE_17__["SimpleInterceptor"], multi: true },
-    { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HTTP_INTERCEPTORS"], useClass: _core__WEBPACK_IMPORTED_MODULE_12__["DefaultInterceptor"], multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
+    { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HTTP_INTERCEPTORS"], useClass: _core_net_new_interceptor__WEBPACK_IMPORTED_MODULE_27__["NewInterceptor"], multi: true },
 ];
 // #endregion
 // #region Startup Service
@@ -3199,6 +3208,7 @@ const APPINIT_PROVIDES = [
     },
 ];
 // #endregion
+
 
 
 
@@ -3232,6 +3242,7 @@ AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
             ...FORM_MODULES,
         ],
         providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES],
+        // providers: [...LANG_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_18__["AppComponent"]],
     })
 ], AppModule);

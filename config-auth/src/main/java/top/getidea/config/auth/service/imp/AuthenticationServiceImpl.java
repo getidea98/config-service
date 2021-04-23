@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 import top.getidea.config.auth.mapper.AuthenticationMapper;
 import top.getidea.config.auth.service.AuthenticationService;
 import top.getidea.config.common.ResultEnum.EnumResult;
+import top.getidea.config.common.entity.userManager.Role;
+import top.getidea.config.common.feign.usermanager.UserFeign;
 import top.getidea.config.common.util.Result;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,6 +29,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private AuthenticationMapper authenticationMapper;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private UserFeign userFeign;
 
     @Value("${preUsernameToken}")
     private String preUsernameToken;
@@ -74,5 +79,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         log.info(String.format("用户：%s,token验证失败",username));
         return new Result(EnumResult.ERROR_TOKEN);
+    }
+
+    @Override
+    public Result login(String username, String password) {
+        Integer count = authenticationMapper.validatePassword(username, password);
+        if (count != null && count == 1) {
+            String key = String.format(preUsernameToken, username);
+            ValueOperations<String, String> stringStringValueOperations = redisTemplate.opsForValue();
+            String token = UUID.randomUUID().toString();
+            stringStringValueOperations.set(key, token);
+            Map<String, Object> result = new HashMap<>(16);
+            result.put("token", token);
+            List<Role> roles = userFeign.getRoleByUserName(username).getData();
+            result.put("role", roles.get(0).getId());
+            return new Result(EnumResult.SUCCESS).setData(result);
+        }
+        return new Result(EnumResult.ERROR_PASSWORD);
     }
 }

@@ -27,23 +27,23 @@ public class ProjectController {
     }
 
     @PostMapping("/addProject")
-    public Result addProject(@RequestBody Project project) {
-        return projectService.addProject(project);
+    public Result addProject(@RequestBody Project project,@RequestHeader String username,@RequestHeader String token) {
+        return projectService.addProject(project,username,token);
     }
 
     @PutMapping("/apply")
-    public Result apply(@RequestBody Integer projectId) {
-        return projectService.apply(projectId);
+    public Result apply(@RequestBody Integer projectId,@RequestHeader String username,@RequestHeader String token) {
+        return projectService.apply(projectId,username,token);
     }
 
     @PutMapping("/deploy")
-    public Result deploy(@RequestBody DeployInfo deployInfo, @RequestHeader("username") String username) {
-        return projectService.deploy(deployInfo.getProjectId(),deployInfo.getDeployerId(),username);
+    public Result deploy(@RequestBody DeployInfo deployInfo, @RequestHeader("username") String username,@RequestHeader String token) {
+        return projectService.deploy(deployInfo.getProjectId(),deployInfo.getDeployerId(),username,token);
     }
 
     @PutMapping("/editProject")
-    public Result editProject(@RequestBody Project project) {
-        return projectService.editProject(project);
+    public Result editProject(@RequestBody Project project, @RequestHeader String username,@RequestHeader String token) {
+        return projectService.editProject(project,username,token);
     }
 
     @GetMapping("/getProjectDetail")

@@ -18,7 +18,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/product")
 @Slf4j
-@CrossOrigin
 public class ProductController {
 
     @Resource(name = "productService")
@@ -41,7 +40,7 @@ public class ProductController {
      */
     @PutMapping("/updateProduct")
     public Result updateProduct(@RequestBody ProductMetaDTO productMetaDTO,@RequestHeader String username, @RequestHeader String token) {
-        return productService.updateProduct(productMetaDTO.getProductMeta(), productMetaDTO.getProduct());
+        return productService.updateProduct(productMetaDTO.getProductMeta(), productMetaDTO.getProduct(),username,token);
     }
 
     @GetMapping("/getList")
@@ -61,23 +60,19 @@ public class ProductController {
 
 
     /**
-     * 创建项目，不是追加更新
+     * 创建产品，不是追加更新
      *
      * @param productMetaDTO 产品元信息
      * @return
      */
     @PostMapping("/addProduct")
-    public Result addProduct(@RequestBody ProductMetaDTO productMetaDTO) {
-        return productService.addProduct(productMetaDTO.getProductMeta(), productMetaDTO.getProduct());
+    public Result addProduct(@RequestBody ProductMetaDTO productMetaDTO, @RequestHeader String username) {
+        return productService.addProduct(productMetaDTO.getProductMeta(), productMetaDTO.getProduct(),username);
     }
 
     @PutMapping("/appendProduct")
-    public Result appendProduct(@RequestBody ProductMetaDTO productMetaDTO) {
-        return productService.appendProduct(productMetaDTO.getProductMeta(), productMetaDTO.getProduct());
-    }
-
-    public Result deleteProduct(@RequestParam("id") Integer[] ids) {
-        return productService.deleteProduct(ids);
+    public Result appendProduct(@RequestBody ProductMetaDTO productMetaDTO,@RequestHeader String username, @RequestHeader String token) {
+        return productService.appendProduct(productMetaDTO.getProductMeta(), productMetaDTO.getProduct(),username,token);
     }
 
     /**
@@ -92,7 +87,7 @@ public class ProductController {
     }
 
     /**
-     * 计算产品的数量
+     * 计算产品的数量,不考虑用户
      *
      * @return
      */

@@ -12,6 +12,7 @@ public enum EnumResult {
     SUCCESS(10200,"成功"),
     PARAM_SHORTER(200001,"参数长度不合法"),
     NOT_FOUND(20404,"未找到结果"),
+    ILLEGAL_AUTHORITY(20300,"权限不合法"),
     PARAM_LONGER(200001,"参数长度不合法");
 
 

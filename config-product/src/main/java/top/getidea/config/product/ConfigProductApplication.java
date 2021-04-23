@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @EnableFeignClients(basePackages = {"top.getidea.config.common.feign.*"})
-@ComponentScan(basePackages = {"top.getidea.config.common.feign.*", "top.getidea.config.product.*"})
+@ComponentScan(basePackages = {"top.getidea.config.common.feign.*", "top.getidea.config.*"})
 public class ConfigProductApplication {
 
 	public static void main(String[] args) {

@@ -12,14 +12,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class VerifyRoleAspect {
 
-    @Pointcut("execution(* top.getidea.config.product.service.Imp.ProductServiceImpl.*(..))")
-    public void webLog(){
-        log.info("call VerifyRoleAspect.webLog");
-        System.out.println(1232);
-    }
+    // 切入点是需要当前角色拥有产品经理的
+    @Pointcut("@annotation(top.getidea.config.product.authAnnotation.RoleAuth)")
+    public void roleAuth(){}
 
-    @Before("webLog()")
-    public void doBefore(JoinPoint joinPoint) throws Throwable {
-        log.info("call VerifyRoleAspect.doBefore");
+    @Before("roleAuth()")
+    public void doBefore(JoinPoint joinPoint) {
+        Object[] args = joinPoint.getArgs();
+        System.out.println(args);
     }
 }

@@ -46,4 +46,9 @@ public class AuthenticationController {
     public Result validateToken(@RequestParam(value = "username",required = true) String username, @RequestParam(value = "token",required = true) String token) {
         return authenticationService.validateToken(username,token);
     }
+
+    @GetMapping("/login")
+    public Result login(String username,String password) {
+        return authenticationService.login(username,password);
+    }
 }

@@ -10,4 +10,6 @@ public interface AuthenticationService {
     Result validatePassword(String username, String password);
 
     Result validateToken(String username, String token);
+
+    Result login(String username, String password);
 }

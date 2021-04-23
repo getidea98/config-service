@@ -13,10 +13,12 @@ import top.getidea.config.common.entity.project.ProjectProduct;
 import top.getidea.config.common.entity.userManager.User;
 import top.getidea.config.common.feign.administer.AdministerFeign;
 import top.getidea.config.common.feign.attached.AttachedFeign;
+import top.getidea.config.common.feign.auth.AuthenticationFeign;
 import top.getidea.config.common.feign.deploy.DeploymentFeign;
 import top.getidea.config.common.feign.product.ProductFeign;
 import top.getidea.config.common.feign.usermanager.UserFeign;
 import top.getidea.config.common.util.Result;
+import top.getidea.config.common.verify.Verify;
 import top.getidea.config.project.mapper.ConfigProjectOperateLogMapper;
 import top.getidea.config.project.mapper.ProjectAssetsMapper;
 import top.getidea.config.project.mapper.ProjectMapper;
@@ -49,6 +51,11 @@ public class ProjectServiceImpl implements ProjectService {
     private AdministerFeign administerFeign;
     @Autowired
     private DeploymentFeign deploymentFeign;
+    @Autowired
+    private AuthenticationFeign authenticationFeign;
+    @Autowired
+    private Verify verify;
+    private static String roleCode = "30000";
 
     @Override
     public Result getList(Integer pageNum, Integer pageSize, String scope, String key, String username) {
@@ -92,7 +99,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Result addProject(Project project) {
+    public Result addProject(Project project, String username, String token) {
+        Boolean authVerify = verify.authVerify(username, token, authenticationFeign);
+        Boolean roleVerify = verify.roleVerify(username, roleCode, userFeign);
+        if (!authVerify || !roleVerify){
+            return new Result(EnumResult.ILLEGAL_AUTHORITY);
+        }
         project.setCreateTime(new Date());
         project.setModifyTime(new Date());
         projectMapper.insert(project);
@@ -136,7 +148,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Result apply(Integer projectId) {
+    public Result apply(Integer projectId, String username, String token) {
+        Boolean authVerify = verify.authVerify(username, token, authenticationFeign);
+        Boolean roleVerify = verify.roleVerify(username, roleCode, userFeign);
+        if (!authVerify || !roleVerify){
+            return new Result(EnumResult.ILLEGAL_AUTHORITY);
+        }
         {
             /**
              * 向 config_project_operate_log 表添加记录
@@ -172,7 +189,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Result editProject(Project project) {
+    public Result editProject(Project project, String username, String token) {
+        Boolean authVerify = verify.authVerify(username, token, authenticationFeign);
+        Boolean roleVerify = verify.roleVerify(username, roleCode, userFeign);
+        if (!authVerify || !roleVerify){
+            return new Result(EnumResult.ILLEGAL_AUTHORITY);
+        }
         // 更新项目基本信息
         projectMapper.updateById(project);
         {
@@ -297,10 +319,16 @@ public class ProjectServiceImpl implements ProjectService {
      * @param projectId
      * @param deployerId
      * @param username
+     * @param token
      * @return
      */
     @Override
-    public Result deploy(Integer projectId, Integer deployerId, String username) {
+    public Result deploy(Integer projectId, Integer deployerId, String username, String token) {
+        Boolean authVerify = verify.authVerify(username, token, authenticationFeign);
+        Boolean roleVerify = verify.roleVerify(username, roleCode, userFeign);
+        if (!authVerify || !roleVerify){
+            return new Result(EnumResult.ILLEGAL_AUTHORITY);
+        }
         Project project = new Project();
         project.setProjectId(projectId);
         project.setProgress(4);

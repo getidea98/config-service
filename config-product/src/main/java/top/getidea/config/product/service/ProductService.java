@@ -19,7 +19,7 @@ public interface ProductService {
      * @param product      产品主体
      * @return
      */
-    Result addProduct(ProductMeta attachedList, Product product);
+    Result addProduct(ProductMeta attachedList, Product product, String username);
 
     /**
      * 删除产品
@@ -62,11 +62,13 @@ public interface ProductService {
      *
      * @param productMeta
      * @param product
+     * @param username
+     * @param token
      * @return
      */
-    Result updateProduct(ProductMeta productMeta, Product product);
+    Result updateProduct(ProductMeta productMeta, Product product, String username, String token);
 
-    Result appendProduct(ProductMeta productMeta, Product product);
+    Result appendProduct(ProductMeta productMeta, Product product, String username, String token);
 
     Result getAllProductVersion();
 }

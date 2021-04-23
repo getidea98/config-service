@@ -12,11 +12,11 @@ import java.util.List;
 public interface ProjectService {
     Result getList(Integer pageNum, Integer pageSize, String scope, String key, String name);
 
-    Result addProject(Project project);
+    Result addProject(Project project, String username, String token);
 
-    Result apply(Integer projectId);
+    Result apply(Integer projectId, String username, String token);
 
-    Result editProject(Project project);
+    Result editProject(Project project, String username, String token);
 
     Result getProjectDetail(Integer projectId);
 
@@ -24,7 +24,7 @@ public interface ProjectService {
 
     Result writeProjectOperateLog(ConfigProjectOperateLog projectOperateLog);
 
-    Result deploy(Integer projectId, Integer deployerId, String username);
+    Result deploy(Integer projectId, Integer deployerId, String username, String token);
 
     Result getSessionNumber(String username);
 }

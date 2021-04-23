@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import top.getidea.config.common.entity.userManager.Role;
 import top.getidea.config.common.entity.userManager.User;
 import top.getidea.config.common.util.Result;
 
@@ -35,5 +36,12 @@ public interface UserFeign {
 
     @GetMapping("/api/userManager/getUserByUsernameParam")
     Result<User> getUserByUsernameParam(@RequestParam(value = "username") String username);
+    @GetMapping("/api/userManager/getRoleByKey")
+    Result<Role> getRoleByKey(@RequestParam("roleId") Integer roleId);
 
+    @GetMapping("/api/userManager/getRoleByUserId")
+    Result<List<Role>> getRoleByUserId(@RequestParam("userId") Integer userId);
+
+    @GetMapping("/api/userManager/getRoleByUserName")
+    Result<List<Role>> getRoleByUserName(@RequestParam("username") String username);
 }

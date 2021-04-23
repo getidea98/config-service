@@ -32,6 +32,11 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         super(Config.class);
     }
 
+    /**
+     * 校验username 与 token 是否一致
+     * @param config
+     * @return
+     */
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {

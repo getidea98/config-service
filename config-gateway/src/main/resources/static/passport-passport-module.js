@@ -452,8 +452,8 @@ let UserLoginComponent = class UserLoginComponent {
         // #region get captcha
         this.count = 0;
         this.form = fb.group({
-            userName: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].pattern(/^(admin|user)$/)]],
-            password: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].pattern(/^(ng\-alain\.com)$/)]],
+            userName: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required]],
+            password: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required]],
             mobile: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].pattern(/^1\d{10}$/)]],
             captcha: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required]],
             remember: [true],
@@ -492,50 +492,26 @@ let UserLoginComponent = class UserLoginComponent {
     }
     // #endregion
     submit() {
-        this.error = '';
-        if (this.type === 0) {
-            this.userName.markAsDirty();
-            this.userName.updateValueAndValidity();
-            this.password.markAsDirty();
-            this.password.updateValueAndValidity();
-            if (this.userName.invalid || this.password.invalid) {
-                return;
-            }
-        }
-        else {
-            this.mobile.markAsDirty();
-            this.mobile.updateValueAndValidity();
-            this.captcha.markAsDirty();
-            this.captcha.updateValueAndValidity();
-            if (this.mobile.invalid || this.captcha.invalid) {
-                return;
-            }
-        }
-        // 默认配置中对所有HTTP请求都会强制 [校验](https://ng-alain.com/auth/getting-started) 用户 Token
-        // 然一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
-        this.http
-            .post('/login/account?_allow_anonymous=true', {
-            type: this.type,
-            userName: this.userName.value,
-            password: this.password.value,
-        })
-            .subscribe((res) => {
-            if (res.msg !== 'ok') {
-                this.error = res.msg;
-                return;
-            }
+        this.http.get(_env_environment__WEBPACK_IMPORTED_MODULE_10__["environment"].SERVER_URL + '/api/auth/login?', {
+            username: this.userName.value,
+            password: this.password.value
+        }).subscribe(res => {
+            const token = res.data.token;
+            const _token = {
+                expired: +new Date() + 1000 * 60 * 5,
+                id: 10000,
+                name: this.userName.value,
+                time: +new Date(),
+                token: token,
+            };
+            localStorage.setItem("_token", JSON.stringify(_token));
+            localStorage.setItem("username", this.userName.value);
+            localStorage.setItem("token", token);
+            localStorage.setItem("role", JSON.stringify(res.data.role));
             // 清空路由复用信息
             this.reuseTabService.clear();
-            // 设置用户Token信息
-            // TODO: Mock expired value
-            res.user.expired = +new Date() + 1000 * 60 * 5;
-            this.tokenService.set(res.user);
-            // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
             this.startupSrv.load().then(() => {
-                let url = this.tokenService.referrer.url || '/';
-                if (url.includes('/passport')) {
-                    url = '/';
-                }
+                let url = '/';
                 this.router.navigateByUrl(url);
             });
         });
@@ -722,7 +698,7 @@ CallbackComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<form nz-form [formGroup]=\"form\" (ngSubmit)=\"submit()\" role=\"form\">\n  <nz-tabset [nzAnimated]=\"false\" class=\"tabs\" (nzSelectChange)=\"switch($event)\">\n    <nz-tab [nzTitle]=\"'app.login.tab-login-credentials' | translate\">\n      <nz-alert *ngIf=\"error\" [nzType]=\"'error'\" [nzMessage]=\"error\" [nzShowIcon]=\"true\" class=\"mb-lg\"></nz-alert>\n      <nz-form-item>\n        <nz-form-control nzErrorTip=\"Please enter mobile number, muse be: admin or user\">\n          <nz-input-group nzSize=\"large\" nzPrefixIcon=\"user\">\n            <input nz-input formControlName=\"userName\" placeholder=\"username: admin or user\" />\n          </nz-input-group>\n        </nz-form-control>\n      </nz-form-item>\n      <nz-form-item>\n        <nz-form-control nzErrorTip=\"Please enter password, muse be: ng-alain.com\">\n          <nz-input-group nzSize=\"large\" nzPrefixIcon=\"lock\">\n            <input nz-input type=\"password\" formControlName=\"password\" placeholder=\"password: ng-alain.com\" />\n          </nz-input-group>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-tab>\n    <nz-tab [nzTitle]=\"'app.login.tab-login-mobile' | translate\">\n      <nz-form-item>\n        <nz-form-control [nzErrorTip]=\"mobileErrorTip\">\n          <nz-input-group nzSize=\"large\" nzPrefixIcon=\"user\">\n            <input nz-input formControlName=\"mobile\" placeholder=\"mobile number\" />\n          </nz-input-group>\n          <ng-template #mobileErrorTip let-i>\n            <ng-container *ngIf=\"i.errors.required\">\n              {{ 'validation.phone-number.required' | translate }}\n            </ng-container>\n            <ng-container *ngIf=\"i.errors.pattern\">\n              {{ 'validation.phone-number.wrong-format' | translate }}\n            </ng-container>\n          </ng-template>\n        </nz-form-control>\n      </nz-form-item>\n      <nz-form-item>\n        <nz-form-control [nzErrorTip]=\"'validation.verification-code.required' | translate\">\n          <nz-row [nzGutter]=\"8\">\n            <nz-col [nzSpan]=\"16\">\n              <nz-input-group nzSize=\"large\" nzPrefixIcon=\"mail\">\n                <input nz-input formControlName=\"captcha\" placeholder=\"captcha\" />\n              </nz-input-group>\n            </nz-col>\n            <nz-col [nzSpan]=\"8\">\n              <button\n                type=\"button\"\n                nz-button\n                nzSize=\"large\"\n                (click)=\"getCaptcha()\"\n                [disabled]=\"count >= 0\"\n                nzBlock\n                [nzLoading]=\"http.loading\"\n              >\n                {{ count ? count + 's' : ('app.register.get-verification-code' | translate) }}\n              </button>\n            </nz-col>\n          </nz-row>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-tab>\n  </nz-tabset>\n  <nz-form-item>\n    <nz-col [nzSpan]=\"12\">\n      <label nz-checkbox formControlName=\"remember\">{{ 'app.login.remember-me' | translate }}</label>\n    </nz-col>\n    <nz-col [nzSpan]=\"12\" class=\"text-right\">\n      <a class=\"forgot\" (click)=\"msg.error('请找欧阳锋')\">{{ 'app.login.forgot-password' | translate }}</a>\n    </nz-col>\n  </nz-form-item>\n  <nz-form-item>\n    <button nz-button type=\"submit\" nzType=\"primary\" nzSize=\"large\" [nzLoading]=\"http.loading\" nzBlock>\n      {{ 'app.login.login' | translate }}\n    </button>\n  </nz-form-item>\n</form>\n<div class=\"other\">\n  {{ 'app.login.sign-in-with' | translate }}\n  <i nz-tooltip nzTooltipTitle=\"in fact Auth0 via window\" (click)=\"open('auth0', 'window')\" nz-icon nzType=\"alipay-circle\" class=\"icon\"></i>\n  <i nz-tooltip nzTooltipTitle=\"in fact Github via redirect\" (click)=\"open('github')\" nz-icon nzType=\"taobao-circle\" class=\"icon\"></i>\n  <i (click)=\"open('weibo', 'window')\" nz-icon nzType=\"weibo-circle\" class=\"icon\"></i>\n  <a class=\"register\" routerLink=\"/passport/register\">{{ 'app.login.signup' | translate }}</a>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<form nz-form [formGroup]=\"form\" (ngSubmit)=\"submit()\" role=\"form\">\n  <nz-tabset [nzAnimated]=\"false\" class=\"tabs\" (nzSelectChange)=\"switch($event)\">\n    <nz-tab [nzTitle]=\"'app.login.tab-login-credentials' | translate\">\n      <nz-alert *ngIf=\"error\" [nzType]=\"'error'\" [nzMessage]=\"error\" [nzShowIcon]=\"true\" class=\"mb-lg\"></nz-alert>\n      <nz-form-item>\n        <nz-form-control nzErrorTip=\"请输入正确的账号\">\n          <nz-input-group nzSize=\"large\" nzPrefixIcon=\"user\">\n            <input nz-input formControlName=\"userName\" placeholder=\"请输入账号\" />\n          </nz-input-group>\n        </nz-form-control>\n      </nz-form-item>\n      <nz-form-item>\n        <nz-form-control nzErrorTip=\"请输入正确的密码\">\n          <nz-input-group nzSize=\"large\" nzPrefixIcon=\"lock\">\n            <input nz-input type=\"password\" formControlName=\"password\" placeholder=\"请输入密码\" />\n          </nz-input-group>\n        </nz-form-control>\n      </nz-form-item>\n    </nz-tab>\n  </nz-tabset>\n  <nz-form-item>\n    <nz-col [nzSpan]=\"12\">\n\n    </nz-col>\n    <nz-col [nzSpan]=\"12\" class=\"text-right\">\n      <!-- <a class=\"forgot\" (click)=\"msg.error('请找欧阳锋')\">{{ 'app.login.forgot-password' | translate }}</a> -->\n    </nz-col>\n  </nz-form-item>\n  <nz-form-item>\n    <button nz-button type=\"submit\" nzType=\"primary\" nzSize=\"large\" [nzLoading]=\"http.loading\" nzBlock>\n      {{ 'app.login.login' | translate }}\n    </button>\n  </nz-form-item>\n</form>\n<div class=\"other\">\n  {{ 'app.login.sign-in-with' | translate }}\n  <i nz-tooltip nzTooltipTitle=\"in fact Auth0 via window\" (click)=\"open('auth0', 'window')\" nz-icon\n    nzType=\"alipay-circle\" class=\"icon\"></i>\n  <i nz-tooltip nzTooltipTitle=\"in fact Github via redirect\" (click)=\"open('github')\" nz-icon nzType=\"taobao-circle\"\n    class=\"icon\"></i>\n  <i (click)=\"open('weibo', 'window')\" nz-icon nzType=\"weibo-circle\" class=\"icon\"></i>\n  <!-- <a class=\"register\" routerLink=\"/passport/register\">{{ 'app.login.signup' | translate }}</a> -->\n</div>");
 
 /***/ }),
 
